@@ -26,9 +26,9 @@ An enterprise-grade, portable, **FSC-native / Agentforce-ready / Data Cloud-enab
 | 4 | Enterprise Architecture (7 layers) | [docs/04-enterprise-architecture.md](docs/04-enterprise-architecture.md) | Done |
 | 5 | FSC Data Model (LDM/PDM/ERD) | [docs/05-fsc-data-model.md](docs/05-fsc-data-model.md) | Done + deployed |
 | 6 | Agentforce Design (7 agents) | [docs/06-agentforce-design.md](docs/06-agentforce-design.md) | Done |
-| 7 | UX Design Specifications | [docs/07-ux-design-specs.md](docs/07-ux-design-specs.md) | Next (Figma) |
-| 8 | Figma Design Package | [docs/08-figma-design-package.md](docs/08-figma-design-package.md) | Next (Figma) |
-| 9 | Workshop Package (FigJam/Miro) | [docs/09-miro-workshop-package.md](docs/09-miro-workshop-package.md) | Next (FigJam) |
+| 7 | UX Design Specifications | [docs/07-ux-design-specs.md](docs/07-ux-design-specs.md) | Specs done; 1 live screen |
+| 8 | Figma Design Package | [docs/08-figma-design-package.md](docs/08-figma-design-package.md) | Specs done; design system live |
+| 9 | Workshop Package (FigJam/Miro) | [docs/09-miro-workshop-package.md](docs/09-miro-workshop-package.md) | Awaiting FigJam URL |
 | 10 | Demo Storyline (20 min) | [docs/10-demo-storyline.md](docs/10-demo-storyline.md) | Planned |
 | 11 | Implementation Roadmap | [docs/11-implementation-roadmap.md](docs/11-implementation-roadmap.md) | Planned |
 | 12 | Packaging Strategy | [docs/12-packaging-strategy.md](docs/12-packaging-strategy.md) | Planned |
