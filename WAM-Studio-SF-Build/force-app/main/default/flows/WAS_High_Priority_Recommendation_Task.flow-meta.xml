@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>67.0</apiVersion>
+    <description>Creates a high-priority follow-up Task when a High priority AI Recommendation is created. Part of Salesforce Wealth AI Studio.</description>
+    <environments>Default</environments>
+    <interviewLabel>WAS High Priority Recommendation Task {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>WAS High Priority Recommendation Task</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value><stringValue>LightningFlowBuilder</stringValue></value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value><stringValue>AUTO_LAYOUT_CANVAS</stringValue></value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordCreates>
+        <name>Create_Follow_up_Task</name>
+        <label>Create Follow-up Task</label>
+        <locationX>176</locationX>
+        <locationY>276</locationY>
+        <inputAssignments>
+            <field>OwnerId</field>
+            <value><elementReference>$Record.OwnerId</elementReference></value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Priority</field>
+            <value><stringValue>High</stringValue></value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Subject</field>
+            <value><stringValue>Act on AI recommendation</stringValue></value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>WhatId</field>
+            <value><elementReference>$Record.Account__c</elementReference></value>
+        </inputAssignments>
+        <object>Task</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Create_Follow_up_Task</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Priority__c</field>
+            <operator>EqualTo</operator>
+            <value><stringValue>High</stringValue></value>
+        </filters>
+        <object>AI_Recommendation__c</object>
+        <recordTriggerType>Create</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

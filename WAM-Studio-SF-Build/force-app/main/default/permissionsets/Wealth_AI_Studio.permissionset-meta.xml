@@ -208,4 +208,16 @@
     <fieldPermissions><field>Client_Event__c.Account__c</field><readable>true</readable><editable>true</editable></fieldPermissions>
     <fieldPermissions><field>Referral_Prediction__c.Account__c</field><readable>true</readable><editable>true</editable></fieldPermissions>
     <fieldPermissions><field>Engagement_Score__c.Account__c</field><readable>true</readable><editable>true</editable></fieldPermissions>
+    <classAccesses><apexClass>WealthAIStudioService</apexClass><enabled>true</enabled></classAccesses>
+    <classAccesses><apexClass>WealthAILogAgentRun</apexClass><enabled>true</enabled></classAccesses>
+    <tabSettings><tab>AI_Insight__c</tab><visibility>Visible</visibility></tabSettings>
+    <tabSettings><tab>AI_Recommendation__c</tab><visibility>Visible</visibility></tabSettings>
+    <tabSettings><tab>AI_Agent_Run__c</tab><visibility>Visible</visibility></tabSettings>
+    <tabSettings><tab>Advisor_Briefing__c</tab><visibility>Visible</visibility></tabSettings>
+    <tabSettings><tab>Portfolio_Alert__c</tab><visibility>Visible</visibility></tabSettings>
+    <tabSettings><tab>Compliance_Finding__c</tab><visibility>Visible</visibility></tabSettings>
+    <tabSettings><tab>Automation_Template__c</tab><visibility>Visible</visibility></tabSettings>
+    <tabSettings><tab>Prompt_Library__c</tab><visibility>Visible</visibility></tabSettings>
+    <tabSettings><tab>Agent_Template__c</tab><visibility>Visible</visibility></tabSettings>
+    <tabSettings><tab>Client_Health_Score__c</tab><visibility>Visible</visibility></tabSettings>
 </PermissionSet>
