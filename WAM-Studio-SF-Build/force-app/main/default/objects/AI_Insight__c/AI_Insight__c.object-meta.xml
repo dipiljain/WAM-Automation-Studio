@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>AI-generated insight about a client, household, or portfolio. Part of Salesforce Wealth AI Studio.</description>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <label>AI Insight</label>
+    <nameField>
+        <displayFormat>AIN-{00000}</displayFormat>
+        <label>AI Insight Name</label>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>AI Insights</pluralLabel>
+    <sharingModel>ReadWrite</sharingModel>
+    <visibility>Public</visibility>
+</CustomObject>

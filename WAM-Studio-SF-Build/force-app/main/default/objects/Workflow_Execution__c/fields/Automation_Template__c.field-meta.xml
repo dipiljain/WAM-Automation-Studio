@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Automation_Template__c</fullName>
+    <label>Automation Template</label>
+    <referenceTo>Automation_Template__c</referenceTo>
+    <relationshipLabel>Workflow Executions</relationshipLabel>
+    <relationshipName>Workflow_Executions</relationshipName>
+    <required>false</required>
+    <type>Lookup</type>
+</CustomField>

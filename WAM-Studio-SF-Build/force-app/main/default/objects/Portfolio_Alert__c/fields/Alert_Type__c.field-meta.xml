@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Alert_Type__c</fullName>
+    <label>Alert Type</label>
+    <required>false</required>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value><fullName>Drift</fullName><default>true</default><label>Drift</label></value>
+            <value><fullName>Concentration</fullName><default>false</default><label>Concentration</label></value>
+            <value><fullName>Risk</fullName><default>false</default><label>Risk</label></value>
+            <value><fullName>Cash</fullName><default>false</default><label>Cash</label></value>
+            <value><fullName>Suitability</fullName><default>false</default><label>Suitability</label></value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

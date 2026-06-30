@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Finding_Type__c</fullName>
+    <label>Finding Type</label>
+    <required>false</required>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value><fullName>KYC</fullName><default>true</default><label>KYC</label></value>
+            <value><fullName>AML</fullName><default>false</default><label>AML</label></value>
+            <value><fullName>Suitability</fullName><default>false</default><label>Suitability</label></value>
+            <value><fullName>Surveillance</fullName><default>false</default><label>Surveillance</label></value>
+            <value><fullName>Regulatory</fullName><default>false</default><label>Regulatory</label></value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>
