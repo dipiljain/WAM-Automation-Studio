@@ -28,7 +28,7 @@ An enterprise-grade, portable, **FSC-native / Agentforce-ready / Data Cloud-enab
 | 6 | Agentforce Design (7 agents) | [docs/06-agentforce-design.md](docs/06-agentforce-design.md) | Done |
 | 7 | UX Design Specifications | [docs/07-ux-design-specs.md](docs/07-ux-design-specs.md) | Specs done; 1 live screen |
 | 8 | Figma Design Package | [docs/08-figma-design-package.md](docs/08-figma-design-package.md) | Specs done; design system live |
-| 9 | Workshop Package (FigJam/Miro) | [docs/09-miro-workshop-package.md](docs/09-miro-workshop-package.md) | Awaiting FigJam URL |
+| 9 | Workshop Package (FigJam/Miro) | [docs/09-miro-workshop-package.md](docs/09-miro-workshop-package.md) | Done (Mermaid boards) |
 | 10 | Demo Storyline (20 min) | [docs/10-demo-storyline.md](docs/10-demo-storyline.md) | Done |
 | 11 | Implementation Roadmap | [docs/11-implementation-roadmap.md](docs/11-implementation-roadmap.md) | Done |
 | 12 | Packaging Strategy | [docs/12-packaging-strategy.md](docs/12-packaging-strategy.md) | Done |
@@ -40,7 +40,7 @@ An enterprise-grade, portable, **FSC-native / Agentforce-ready / Data Cloud-enab
 WAM-Automation-Studio/
 ├─ README.md                 # this file
 ├─ docs/                     # all design deliverables (D0-D13)
-├─ diagrams/                 # Mermaid diagram sources
+├─ diagrams/                 # 23 importable Mermaid (.mmd) diagrams (FigJam/Miro/draw.io) + index
 └─ WAM-Studio-SF-Build/      # deployable Salesforce DX (Agentforce DX) project
    └─ force-app/main/default/
       ├─ objects/            # 18 custom AI objects + fields (deployed)

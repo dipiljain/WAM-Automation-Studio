@@ -1,0 +1,13 @@
+flowchart LR
+  A[Advisor Home] --> B[Meeting Center]
+  B --> C{Prep ready?}
+  C -- No --> D[Click Prep me]
+  D --> E[Advisor Agent generates briefing]
+  E --> F[Ground on Client 360]
+  F --> G[Review talking points and NBAs]
+  C -- Yes --> G
+  G --> H[Start meeting]
+  H --> I[Capture notes]
+  I --> J[AI summary and follow-up draft]
+  J --> K[Send follow-up and create tasks]
+  K --> L[Log to AI Agent Run]

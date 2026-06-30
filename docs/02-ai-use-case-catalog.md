@@ -2,6 +2,8 @@
 
 40 use cases across Advisor, Portfolio, Client, Distribution, Compliance, Operations, and Executive intelligence, prioritized with a weighted scoring model and organized into three delivery tiers.
 
+*Diagrams: [impact vs feasibility quadrant](../diagrams/02-usecase-quadrant.mmd), [domain mindmap](../diagrams/02-usecase-domain-mindmap.mmd).*
+
 ## Scoring methodology
 
 Each use case is scored **1-5** on five dimensions; the weighted sum is normalized to a **0-100 Priority Score**.

@@ -2,6 +2,8 @@
 
 The studio's capabilities are organized into **8 intelligence domains**. Each capability lists Inputs, Outputs, Users, Dependencies, and Salesforce Components, and links back to the use cases (UC#) it realizes.
 
+*Diagram: [capability mindmap](../diagrams/03-capability-mindmap.mmd).*
+
 ```mermaid
 flowchart TB
   subgraph Front[Client & Advisor facing]

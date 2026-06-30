@@ -1,0 +1,13 @@
+flowchart TB
+  ROUTER[Wealth AI Orchestrator]
+  ROUTER --> ADV[Advisor Agent]
+  ROUTER --> PORT[Portfolio Agent]
+  ROUTER --> SVC[Service Agent]
+  ROUTER --> DIST[Distribution Agent]
+  ROUTER --> COMP[Compliance Agent]
+  ROUTER --> OPS[Operations Agent]
+  ROUTER --> EXEC[Executive Agent]
+  ADV -.shares context.-> PORT
+  ADV -.hands off.-> COMP
+  OPS -.hands off.-> COMP
+  PORT -.signals.-> EXEC

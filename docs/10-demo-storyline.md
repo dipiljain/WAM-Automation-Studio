@@ -2,6 +2,8 @@
 
 A tight, value-led demo that takes a wealth firm from "AI is interesting" to "AI runs my book." It follows one advisor (Alex) through a realistic day, then zooms out to the firm. Every scene ties to a use case ([D2](02-ai-use-case-catalog.md)), an agent ([D6](06-agentforce-design.md)), a screen ([D7](07-ux-design-specs.md)), and grounded FSC data ([D5](05-fsc-data-model.md)).
 
+*Diagram: [demo flow sequence](../diagrams/10-demo-flow.mmd).*
+
 ## Narrative arc
 **"From inbox to insight to action, with trust built in."** Alex starts the day buried in prep, lets Agentforce do the heavy lifting (briefing → meeting prep → portfolio fix → compliant follow-up), grows the book with AI-found opportunities, and the COO sees firm-wide value, all on native Salesforce.
 

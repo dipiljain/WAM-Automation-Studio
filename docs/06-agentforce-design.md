@@ -2,6 +2,8 @@
 
 Seven role-aligned agents power the studio. Each is built in **Agentforce** (Agent Builder + Prompt Builder), grounded on **Data Cloud + FSC** ([D5](05-fsc-data-model.md)), and bounded by the **Einstein Trust Layer** and the Governance Layer ([D4](04-enterprise-architecture.md)). Every invocation is logged to `AI_Agent_Run__c` for audit.
 
+*Diagrams: [agent topology](../diagrams/06-agent-topology.mmd), [agent interaction sequence](../diagrams/06-agent-sequence.mmd).*
+
 ## Agent portfolio
 
 ```mermaid

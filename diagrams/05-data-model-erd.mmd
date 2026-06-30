@@ -1,0 +1,45 @@
+erDiagram
+  ACCOUNT ||--o{ CONTACT : "household members"
+  ACCOUNT ||--o{ FINANCIAL_ACCOUNT : owns
+  ACCOUNT ||--o{ FINANCIAL_GOAL : has
+  ACCOUNT ||--o{ INTERACTION : engages
+  ACCOUNT ||--|| PARTY_PROFILE_RISK : "risk profile"
+  ACCOUNT ||--o{ AI_INSIGHT : about
+  ACCOUNT ||--o{ AI_RECOMMENDATION : about
+  ACCOUNT ||--o{ ADVISOR_BRIEFING : for
+  ACCOUNT ||--o{ MEETING_SUMMARY : for
+  ACCOUNT ||--o{ CLIENT_HEALTH_SCORE : scored
+  FINANCIAL_ACCOUNT ||--o{ PORTFOLIO_ALERT : raises
+  FINANCIAL_ACCOUNT ||--o{ RISK_SIGNAL : emits
+  AGENT_TEMPLATE ||--o{ AI_AGENT_RUN : executes
+  PROMPT_LIBRARY ||--o{ AI_AGENT_RUN : uses
+  AI_AGENT_RUN ||--o{ AI_CONVERSATION : logs
+  AI_AGENT_RUN ||--o{ AI_INSIGHT : produces
+  AI_AGENT_RUN ||--o{ AI_RECOMMENDATION : produces
+  AI_RECOMMENDATION ||--o{ REFERRAL_PREDICTION : includes
+  ACCOUNT {
+    Id Id PK
+    string Name
+    string RecordType "Household"
+  }
+  FINANCIAL_ACCOUNT {
+    Id Id PK
+    currency Balance
+    string Type
+  }
+  AI_AGENT_RUN {
+    Id Id PK
+    string Agent_Name
+    string Status
+    datetime Run_Timestamp
+  }
+  AI_INSIGHT {
+    Id Id PK
+    string Insight_Type
+    number Confidence
+  }
+  AI_RECOMMENDATION {
+    Id Id PK
+    string Action
+    currency Est_Value
+  }

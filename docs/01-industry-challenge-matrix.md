@@ -2,6 +2,8 @@
 
 This matrix maps **44 challenges** across the 10-stage WAM client lifecycle plus the 6-stage operations lifecycle, covering all 8 personas. Each row links a current challenge to its AI opportunity and business outcome.
 
+*Diagram: [challenge mindmap](../diagrams/01-challenge-mindmap.mmd) (importable Mermaid; see [diagrams/](../diagrams/README.md)).*
+
 **Priority legend:** P1 = highest (MVP / Tier 1), P2 = scale, P3 = agentic future.
 
 **Columns:** Journey Stage | Persona | Current Challenge | Current Process | Pain Point | AI Opportunity | Business Outcome | Priority

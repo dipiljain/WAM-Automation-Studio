@@ -1,0 +1,21 @@
+flowchart TB
+  subgraph PEOPLE[People]
+    ADVP[Advisors]
+    SPEC[Specialists]
+    OPSP[Operations]
+  end
+  subgraph AIW[AI Workforce]
+    AGT[Seven Agentforce agents]
+  end
+  subgraph PLAT[Platform]
+    SF[Salesforce FSC]
+    DCP[Data Cloud]
+    TLP[Trust Layer]
+  end
+  subgraph GOVN[Governance]
+    GOV[Model risk and compliance]
+  end
+  PEOPLE <--> AIW
+  AIW --> PLAT
+  PLAT --> GOVN
+  GOVN --> AIW

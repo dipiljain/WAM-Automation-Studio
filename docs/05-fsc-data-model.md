@@ -4,6 +4,8 @@
 
 This model is **grounded in the live target org** `wm-studio-org` (`360finance2.my.salesforce.com`, API 67.0), introspected via the Salesforce CLI. The org runs the **modern FSC data model** (standard `FinancialAccount`, `FinancialGoal`, `Interaction`, `InteractionSummary`, and the `Party*` family) rather than the legacy `FinServ__` managed package.
 
+*Diagram: [FSC + custom-object ERD](../diagrams/05-data-model-erd.mmd).*
+
 ## Org introspection findings (standard objects confirmed present)
 
 | Domain | FSC / standard objects confirmed in org |

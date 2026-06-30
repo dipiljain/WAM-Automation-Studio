@@ -2,6 +2,8 @@
 
 A crawl-walk-run path from a deployed accelerator to a firm-wide AI operating model. Phase 1 stands up the foundation and the Advisor Agent on a real org (already proven on `wm-studio-org`, [D5](05-fsc-data-model.md)); later phases scale agents, channels, and autonomy. The roadmap is sequenced to deliver advisor value in the first 90 days while building the trust and data foundation enterprise rollout requires.
 
+*Diagrams: [roadmap gantt](../diagrams/11-roadmap-gantt.mmd), [roadmap timeline](../diagrams/09-roadmap-timeline.mmd).*
+
 ## Phasing model
 
 | Phase | Theme | Duration | Outcome |

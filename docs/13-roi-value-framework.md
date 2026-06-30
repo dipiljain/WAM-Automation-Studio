@@ -2,6 +2,8 @@
 
 A structured way to quantify, instrument, and realize the value of the Wealth AI Studio. It connects the use cases ([D2](02-ai-use-case-catalog.md)) and agents ([D6](06-agentforce-design.md)) to four value drivers, defines how each is measured natively in Salesforce, and provides an illustrative business case. **All figures below are illustrative defaults for modeling; replace with firm-specific baselines during Phase 0 ([D11](11-implementation-roadmap.md)).**
 
+*Diagram: [ROI KPI tree](../diagrams/13-roi-kpi-tree.mmd).*
+
 ## Value drivers
 
 | Driver | How AI creates value | Primary agents |

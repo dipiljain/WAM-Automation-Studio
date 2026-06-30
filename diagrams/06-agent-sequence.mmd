@@ -1,0 +1,18 @@
+sequenceDiagram
+  actor Advisor
+  participant UI as Advisor Home
+  participant ORCH as Orchestrator
+  participant ADV as Advisor Agent
+  participant DC as Data Cloud + FSC
+  participant TL as Trust Layer
+  participant LOG as AI_Agent_Run
+  Advisor->>UI: Prep me for the 9:30 meeting
+  UI->>ORCH: Route request with client context
+  ORCH->>ADV: Invoke meeting prep
+  ADV->>DC: Ground on account, goals, interactions
+  DC-->>ADV: Unified profile and records
+  ADV->>TL: Apply guardrails and masking
+  TL-->>ADV: Approved grounded prompt
+  ADV-->>UI: Briefing with citations
+  ADV->>LOG: Log run and conversation
+  Advisor->>UI: Add rebalance to the agenda

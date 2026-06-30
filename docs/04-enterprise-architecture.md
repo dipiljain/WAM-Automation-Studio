@@ -2,6 +2,8 @@
 
 A 7-layer reference architecture for the Salesforce Wealth AI Studio. Each layer is FSC-native and Agentforce/Data Cloud-enabled, with a cross-cutting Governance layer.
 
+*Diagram: [architecture flowchart](../diagrams/04-architecture.mmd).*
+
 ## Layered overview
 
 ```mermaid

@@ -1,0 +1,12 @@
+flowchart LR
+  A[New client] --> B[Onboarding workspace]
+  B --> C[Upload documents]
+  C --> D[AI extraction and completeness]
+  D --> E[KYC and identity verification]
+  E --> F[AML screening]
+  F --> G{Exceptions?}
+  G -- Yes --> H[Route to Compliance Agent]
+  G -- No --> I[Submit for approval]
+  H --> I
+  I --> J[Account activated]
+  J --> K[Handoff to Advisor]

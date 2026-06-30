@@ -4,6 +4,8 @@ The Salesforce Wealth AI Studio UX is delivered as a **Cosmos / SLDS-aligned** e
 
 Live Figma file: **[FS-Automation-Studio](https://www.figma.com/design/G6hyOQT78XLfwDrWpiaq6g/FS-Automation-Studio)** (design system + screens). See [D8](08-figma-design-package.md) for the design system and component library.
 
+*Diagrams: [navigation/IA](../diagrams/07-navigation-ia.mmd), [meeting-prep flow](../diagrams/07-flow-meeting-prep.mmd), [rebalance flow](../diagrams/07-flow-rebalance.mmd), [onboarding flow](../diagrams/07-flow-onboarding.mmd).*
+
 ## 1. Design principles
 
 | # | Principle | What it means here |

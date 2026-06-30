@@ -1,0 +1,13 @@
+flowchart LR
+  A[Portfolio Intelligence] --> B[Detect drift and idle cash]
+  B --> C[Portfolio Agent proposal]
+  C --> D{Suitability check}
+  D -- Pass --> E[Generate proposal]
+  D -- Fail --> F[Adjust and re-check]
+  F --> D
+  E --> G[Compliance language check]
+  G --> H{Approval needed?}
+  H -- Yes --> I[Human approves]
+  H -- No --> J[Create rebalance task]
+  I --> J
+  J --> K[Log to AI Agent Run]

@@ -1,0 +1,44 @@
+flowchart TB
+  subgraph EXP[Experience Layer]
+    UI[Lightning Desktop + Mobile + Agent UI]
+  end
+  subgraph AGL[Agent Layer]
+    ORCH[Wealth AI Orchestrator]
+    AGENTS[Seven Role Agents]
+  end
+  subgraph AIL[AI and Trust Layer]
+    PROMPT[Prompt Builder]
+    TRUST[Einstein Trust Layer]
+    MODELS[Foundation Models]
+  end
+  subgraph DATA[Data Layer]
+    DC[Data Cloud]
+    FSC[Financial Services Cloud]
+    KNOW[Knowledge Artifacts]
+  end
+  subgraph AUTO[Automation Layer]
+    FLOW[Flows]
+    EVENTS[Platform Events]
+  end
+  subgraph INT[Integration Layer]
+    MULE[MuleSoft and APIs]
+    EXT[Market and Custodian Data]
+  end
+  subgraph GOV[Governance Layer]
+    AUDIT[AI Agent Run Audit]
+    SEC[Security and Sharing]
+  end
+  UI --> ORCH
+  ORCH --> AGENTS
+  AGENTS --> PROMPT
+  PROMPT --> MODELS
+  PROMPT --> TRUST
+  AGENTS --> DC
+  DC --> FSC
+  AGENTS --> KNOW
+  AGENTS --> FLOW
+  FLOW --> EVENTS
+  DC --> MULE
+  MULE --> EXT
+  AGENTS -.audit.-> AUDIT
+  DATA --> SEC
