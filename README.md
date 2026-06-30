@@ -29,10 +29,10 @@ An enterprise-grade, portable, **FSC-native / Agentforce-ready / Data Cloud-enab
 | 7 | UX Design Specifications | [docs/07-ux-design-specs.md](docs/07-ux-design-specs.md) | Specs done; 1 live screen |
 | 8 | Figma Design Package | [docs/08-figma-design-package.md](docs/08-figma-design-package.md) | Specs done; design system live |
 | 9 | Workshop Package (FigJam/Miro) | [docs/09-miro-workshop-package.md](docs/09-miro-workshop-package.md) | Awaiting FigJam URL |
-| 10 | Demo Storyline (20 min) | [docs/10-demo-storyline.md](docs/10-demo-storyline.md) | Planned |
-| 11 | Implementation Roadmap | [docs/11-implementation-roadmap.md](docs/11-implementation-roadmap.md) | Planned |
-| 12 | Packaging Strategy | [docs/12-packaging-strategy.md](docs/12-packaging-strategy.md) | Planned |
-| 13 | ROI & Value Framework | [docs/13-roi-value-framework.md](docs/13-roi-value-framework.md) | Planned |
+| 10 | Demo Storyline (20 min) | [docs/10-demo-storyline.md](docs/10-demo-storyline.md) | Done |
+| 11 | Implementation Roadmap | [docs/11-implementation-roadmap.md](docs/11-implementation-roadmap.md) | Done |
+| 12 | Packaging Strategy | [docs/12-packaging-strategy.md](docs/12-packaging-strategy.md) | Done |
+| 13 | ROI & Value Framework | [docs/13-roi-value-framework.md](docs/13-roi-value-framework.md) | Done |
 
 ## Repository structure
 
