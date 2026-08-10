@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<FlexiPage xmlns="http://soap.sforce.com/2006/04/metadata">
+    <flexiPageRegions>
+        <name>top</name>
+        <type>Region</type>
+        <itemInstances>
+            <componentInstance>
+                <componentName>flexipage:richText</componentName>
+                <identifier>wamExecutiveHomeBanner</identifier>
+                <componentInstanceProperties>
+                    <name>richTextValue</name>
+                    <value
+          >&lt;h2&gt;Executive Home&lt;/h2&gt;&lt;p&gt;Track firm performance, pipeline quality, and autonomous operations health.&lt;/p&gt;</value>
+                </componentInstanceProperties>
+            </componentInstance>
+        </itemInstances>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <name>bottomLeft</name>
+        <type>Region</type>
+        <itemInstances>
+            <componentInstance>
+                <componentName>c:executiveHomeCard</componentName>
+                <identifier>wamExecutivePersonaCard</identifier>
+            </componentInstance>
+        </itemInstances>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <name>bottomRight</name>
+        <type>Region</type>
+        <itemInstances>
+            <componentInstance>
+                <componentName>c:growthServiceCommandCenter</componentName>
+                <identifier>wamExecutivePersonaGrowthCenter</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentName>c:autonomyControlTower</componentName>
+                <identifier>wamExecutivePersonaAutonomyTower</identifier>
+            </componentInstance>
+        </itemInstances>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <name>sidebar</name>
+        <type>Region</type>
+        <itemInstances>
+            <componentInstance>
+                <componentName>flexipage:richText</componentName>
+                <identifier>wamExecutiveGettingStarted</identifier>
+                <componentInstanceProperties>
+                    <name>richTextValue</name>
+                    <value
+          >&lt;h3&gt;Executive workflow&lt;/h3&gt;&lt;p&gt;Review KPI trends, open growth opportunities, and escalated autonomous decisions.&lt;/p&gt;</value>
+                </componentInstanceProperties>
+            </componentInstance>
+        </itemInstances>
+    </flexiPageRegions>
+    <masterLabel>Wealth AI Studio Executive Home</masterLabel>
+    <template>
+        <name>home:desktopTemplate</name>
+    </template>
+    <type>HomePage</type>
+</FlexiPage>

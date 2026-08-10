@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<LightningMessageChannel xmlns="http://soap.sforce.com/2006/04/metadata">
+    <masterLabel>WAM Client Selection</masterLabel>
+    <isExposed>true</isExposed>
+    <description
+  >Broadcasts the advisor-selected Client / Household account so Advisor Home components share one selection instead of each maintaining its own picker.</description>
+    <lightningMessageFields>
+        <fieldName>accountId</fieldName>
+        <description
+    >Id of the selected Account (Household/Person Account).</description>
+    </lightningMessageFields>
+</LightningMessageChannel>

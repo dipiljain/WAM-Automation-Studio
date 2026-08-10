@@ -1,0 +1,38 @@
+<template>
+  <template if:true={showCard}>
+    <c-wam-briefing-header
+      persona-label="Partner Manager"
+      subtitle="Track participant health, referrals, and workflows across your partner programs."
+      icon-name="utility:share"
+      theme="partner"
+      focus-headline={focusHeadline}
+      show-reset="true"
+      reset-label="Reset dashboard"
+      onreset={handleReset}
+    ></c-wam-briefing-header>
+
+    <div class="slds-grid slds-wrap slds-gutters_small">
+      <div class="slds-col slds-size_1-of-1">
+        <c-wam-metric-tiles
+          title="Partner Book Snapshot"
+          icon-name="standard:partner_fund_allocation"
+          subtitle="All partner programs at a glance."
+          tiles={metricTiles}
+          loading={metricsLoading}
+          error-message={metricError}
+        ></c-wam-metric-tiles>
+      </div>
+
+      <div class="slds-col slds-size_1-of-1">
+        <c-wam-insight-list
+          title="Needs Your Attention"
+          icon-name="utility:warning"
+          items={priorityItems}
+          loading={priorityLoading}
+          error-message={priorityError}
+          empty-message="No at-risk participants across your partner programs."
+        ></c-wam-insight-list>
+      </div>
+    </div>
+  </template>
+</template>

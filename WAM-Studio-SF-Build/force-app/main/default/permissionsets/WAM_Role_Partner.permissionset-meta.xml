@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>WAM Role - Partner</label>
+    <description
+  >Marks the user as a Wealth AI Studio Partner Program Manager and grants access to the partner (B2B2C) data model, classes, and home tab.</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <customPermissions>
+        <enabled>true</enabled>
+        <name>WAM_Partner</name>
+    </customPermissions>
+    <classAccesses><apexClass>WealthAIPartnerUseCaseService</apexClass><enabled
+    >true</enabled></classAccesses>
+    <classAccesses><apexClass
+    >WealthAIDashboardResetService</apexClass><enabled
+    >true</enabled></classAccesses>
+    <tabSettings>
+        <tab>WAM_Partner_Home</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
+</PermissionSet>

@@ -1,0 +1,16 @@
+.selector {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--slds-g-color-border-base-4, #dddbda);
+  border-radius: var(--slds-g-radius-border-2, 0.5rem);
+  background: var(--slds-g-color-neutral-base-100, #ffffff);
+  margin-bottom: 0.75rem;
+}
+
+.hint {
+  color: var(--slds-g-color-neutral-base-50, #444444);
+  margin: 0;
+}

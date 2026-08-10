@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description
+  >Investment mandate / IPS constraint tracked for an institutional (B2B) or partner program (B2B2C) account. Part of Salesforce Wealth AI Studio.</description>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <label>Institutional Mandate</label>
+    <nameField>
+        <displayFormat>IM-{00000}</displayFormat>
+        <label>Institutional Mandate Name</label>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>Institutional Mandates</pluralLabel>
+    <sharingModel>ReadWrite</sharingModel>
+    <visibility>Public</visibility>
+</CustomObject>

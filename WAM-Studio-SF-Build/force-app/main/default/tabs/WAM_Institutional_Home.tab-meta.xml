@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomTab xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description
+  >Institutional (B2B) relationship manager home page for Wealth AI Studio.</description>
+    <flexiPage>Wealth_AI_Studio_Institutional_Page</flexiPage>
+    <label>Institutional Home</label>
+    <motif>Custom16: Bank</motif>
+</CustomTab>

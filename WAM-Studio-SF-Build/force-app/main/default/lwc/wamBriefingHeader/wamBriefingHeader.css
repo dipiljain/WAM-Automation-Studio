@@ -1,0 +1,150 @@
+.briefing-header {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.6rem 1rem;
+  border-radius: 0.75rem;
+  margin-bottom: 0.75rem;
+  color: #ffffff;
+  box-shadow: var(--slds-g-shadow-outset-2, 0 4px 12px rgba(0, 0, 0, 0.15));
+}
+
+.briefing-header_advisor {
+  background: linear-gradient(135deg, #0b5cab 0%, #014486 100%);
+}
+
+.briefing-header_compliance {
+  background: linear-gradient(135deg, #a4213b 0%, #5c1526 100%);
+}
+
+.briefing-header_executive {
+  background: linear-gradient(135deg, #5c2d91 0%, #2e1a5e 100%);
+}
+
+.briefing-header_institutional {
+  background: linear-gradient(135deg, #04844b 0%, #032d22 100%);
+}
+
+.briefing-header_partner {
+  background: linear-gradient(135deg, #0d9dda 0%, #04704f 100%);
+}
+
+.briefing-icon {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.1rem;
+  height: 2.1rem;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.briefing-text {
+  flex: 0 1 auto;
+  min-width: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.briefing-date {
+  margin: 0;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  opacity: 0.85;
+  order: 3;
+}
+
+.briefing-greeting {
+  margin: 0;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: #ffffff;
+  order: 1;
+  white-space: nowrap;
+}
+
+.briefing-subtitle {
+  margin: 0;
+  font-size: 0.75rem;
+  opacity: 0.9;
+  max-width: 26rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  order: 2;
+}
+
+.briefing-divider {
+  flex: 0 0 auto;
+  width: 1px;
+  height: 1.75rem;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.briefing-focus {
+  flex: 0 1 auto;
+  min-width: 0;
+}
+
+.briefing-focus-label {
+  margin: 0;
+  font-size: 0.625rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  opacity: 0.85;
+}
+
+.briefing-focus-text {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.reset-button {
+  flex: 0 0 auto;
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.3125rem 0.625rem;
+  border-radius: var(--slds-g-radius-border-circle, 999px);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.reset-button:hover {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.reset-label {
+  line-height: 1;
+}
+
+@media (max-width: 48rem) {
+  .briefing-header {
+    flex-wrap: wrap;
+  }
+
+  .briefing-focus {
+    max-width: 100%;
+  }
+
+  .briefing-subtitle {
+    max-width: 100%;
+    white-space: normal;
+  }
+}

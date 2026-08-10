@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomPermission xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description
+  >Identifies a Wealth AI Studio Institutional Relationship Manager. Drives institutional-specific homepage content.</description>
+    <isLicensed>false</isLicensed>
+    <label>WAM Institutional</label>
+</CustomPermission>

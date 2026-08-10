@@ -1,0 +1,145 @@
+<template>
+  <lightning-card title="Autonomy Control Tower" icon-name="utility:decision">
+    <div class="slds-p-around_small">
+      <lightning-combobox
+        if:false={recordId}
+        name="m5AccountSelector"
+        label="Client / Household"
+        value={selectedAccountId}
+        options={accountOptions}
+        onchange={handleAccountChange}
+      ></lightning-combobox>
+
+      <template if:true={loading}>
+        <c-wam-state-panel state="loading"></c-wam-state-panel>
+      </template>
+
+      <template if:true={errorMessage}>
+        <c-wam-state-panel
+          state="error"
+          title="Control tower error"
+          message={errorMessage}
+        ></c-wam-state-panel>
+      </template>
+
+      <template if:true={snapshot}>
+        <div
+          class="slds-grid slds-wrap slds-gutters_x-small slds-m-bottom_x-small"
+        >
+          <template for:each={metricTiles} for:item="tile">
+            <div
+              key={tile.key}
+              class="slds-col slds-size_1-of-2 slds-large-size_1-of-4 slds-p-vertical_xx-small"
+            >
+              <c-wam-metric-tile
+                label={tile.label}
+                value={tile.display}
+                tone={tile.tone}
+                record-url={tile.recordUrl}
+              ></c-wam-metric-tile>
+            </div>
+          </template>
+        </div>
+
+        <div class="action-panel">
+          <div class="section-title">Autonomous Agent Cycles</div>
+          <div class="action-grid action-grid_four">
+            <div class="action-cell">
+              <lightning-button
+                stretch
+                label="Run Autonomous Advisor"
+                onclick={handleAdvisor}
+                disabled={actionDisabled}
+              ></lightning-button>
+            </div>
+            <div class="action-cell">
+              <lightning-button
+                stretch
+                label="Run Autonomous Service"
+                onclick={handleService}
+                disabled={actionDisabled}
+              ></lightning-button>
+            </div>
+            <div class="action-cell">
+              <lightning-button
+                stretch
+                label="Run Autonomous Operations"
+                onclick={handleOperations}
+                disabled={actionDisabled}
+              ></lightning-button>
+            </div>
+            <div class="action-cell">
+              <lightning-button
+                stretch
+                label="Run Autonomous Compliance"
+                onclick={handleCompliance}
+                disabled={actionDisabled}
+              ></lightning-button>
+            </div>
+            <div class="action-cell">
+              <lightning-button
+                stretch
+                label="Run Autonomous Prospecting"
+                onclick={handleProspecting}
+                disabled={actionDisabled}
+              ></lightning-button>
+            </div>
+            <div class="action-cell">
+              <lightning-button
+                stretch
+                label="Run AI Branch Manager"
+                onclick={handleBranchManager}
+                disabled={actionDisabled}
+              ></lightning-button>
+            </div>
+            <div class="action-cell">
+              <lightning-button
+                stretch
+                label="Run Portfolio Monitoring"
+                onclick={handlePortfolioMonitor}
+                disabled={actionDisabled}
+              ></lightning-button>
+            </div>
+            <div class="action-cell">
+              <lightning-button
+                stretch
+                label="Run Personalized Engagement"
+                onclick={handlePersonalizedEngagement}
+                disabled={actionDisabled}
+              ></lightning-button>
+            </div>
+          </div>
+        </div>
+
+        <div class="slds-grid slds-wrap slds-gutters_small">
+          <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-2">
+            <c-wam-insight-list
+              title="Autonomy Run Queue"
+              items={runItems}
+              loading={loading}
+            ></c-wam-insight-list>
+          </div>
+          <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-2">
+            <c-wam-insight-list
+              title="Autonomy Signal Queue"
+              items={signalItems}
+              loading={loading}
+            ></c-wam-insight-list>
+          </div>
+        </div>
+      </template>
+    </div>
+
+    <template if:true={lastAction}>
+      <div class="slds-p-horizontal_small slds-p-bottom_small">
+        <c-wam-action-result-panel
+          title={lastAction.title}
+          detail={lastAction.detail}
+          tone={lastAction.tone}
+          next-step={lastAction.nextStep}
+          record-url={lastAction.recordUrl}
+        ></c-wam-action-result-panel>
+      </div>
+    </template>
+  </lightning-card>
+</template>

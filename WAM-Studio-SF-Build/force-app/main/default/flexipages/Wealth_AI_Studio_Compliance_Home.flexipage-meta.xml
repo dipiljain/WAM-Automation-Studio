@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<FlexiPage xmlns="http://soap.sforce.com/2006/04/metadata">
+    <flexiPageRegions>
+        <name>top</name>
+        <type>Region</type>
+        <itemInstances>
+            <componentInstance>
+                <componentName>flexipage:richText</componentName>
+                <identifier>wamComplianceHomeBanner</identifier>
+                <componentInstanceProperties>
+                    <name>richTextValue</name>
+                    <value
+          >&lt;h2&gt;Compliance Home&lt;/h2&gt;&lt;p&gt;Monitor findings, run controls, and process escalations from one workspace.&lt;/p&gt;</value>
+                </componentInstanceProperties>
+            </componentInstance>
+        </itemInstances>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <name>bottomLeft</name>
+        <type>Region</type>
+        <itemInstances>
+            <componentInstance>
+                <componentName>c:complianceHomeCard</componentName>
+                <identifier>wamCompliancePersonaCard</identifier>
+            </componentInstance>
+        </itemInstances>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <name>bottomRight</name>
+        <type>Region</type>
+        <itemInstances>
+            <componentInstance>
+                <componentName>c:opsComplianceWorkbench</componentName>
+                <identifier>wamCompliancePersonaWorkbench</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentName>c:autonomyControlTower</componentName>
+                <identifier>wamCompliancePersonaAutonomyTower</identifier>
+            </componentInstance>
+        </itemInstances>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <name>sidebar</name>
+        <type>Region</type>
+        <itemInstances>
+            <componentInstance>
+                <componentName>flexipage:richText</componentName>
+                <identifier>wamComplianceGettingStarted</identifier>
+                <componentInstanceProperties>
+                    <name>richTextValue</name>
+                    <value
+          >&lt;h3&gt;Compliance workflow&lt;/h3&gt;&lt;p&gt;Review high-risk signals, resolve findings, and approve pending HITL runs.&lt;/p&gt;</value>
+                </componentInstanceProperties>
+            </componentInstance>
+        </itemInstances>
+    </flexiPageRegions>
+    <masterLabel>Wealth AI Studio Compliance Home</masterLabel>
+    <template>
+        <name>home:desktopTemplate</name>
+    </template>
+    <type>HomePage</type>
+</FlexiPage>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<GenAiPromptTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <activeVersionIdentifier
+  >WAMInstitutionalMandateBriefingV1=_1</activeVersionIdentifier>
+    <description
+  >Salesforce Wealth AI Studio: generates a concise, grounded mandate/IPS compliance briefing for a relationship manager based on the selected institutional account.</description>
+    <developerName>Institutional_Mandate_Briefing</developerName>
+    <masterLabel>Institutional Mandate Briefing</masterLabel>
+    <templateVersions>
+        <content
+    >You are a mandate-compliance briefing assistant for an institutional relationship manager at a Wealth &amp; Asset Management firm.
+
+Grounded institutional context (the ONLY facts you may use): {!$Apex:WealthAIInstitutionalDataProvider.Prompt}
+
+Using ONLY the grounded context above, produce a mandate briefing for &quot;{!$Input:Account_Name}&quot;. If the grounded context says no matching account was found, ask the relationship manager to confirm the account name instead of producing a briefing.
+
+Structure your response with these sections:
+1. Mandate status: number of mandates tracked and any breaches.
+2. Proposal and pipeline: open proposals awaiting action.
+3. Compliance and risk: open findings and risk signals.
+4. Recommended next step for the relationship manager.
+
+Rules:
+- Use only facts present in the grounded context. NEVER invent allocation figures, holdings, or performance data.
+- Do not provide specific investment advice; frame suggestions as discussion topics subject to suitability and mandate review.
+- Be concise and skimmable.
+</content>
+        <inputs>
+            <apiName>Account_Name</apiName>
+            <definition>primitive://String</definition>
+            <masterLabel>Account Name</masterLabel>
+            <referenceName>Input:Account_Name</referenceName>
+            <required>true</required>
+        </inputs>
+        <primaryModel>sfdc_ai__DefaultOpenAIGPT4OmniMini</primaryModel>
+        <status>Published</status>
+        <templateDataProviders>
+            <definition>apex://WealthAIInstitutionalDataProvider</definition>
+            <parameters>
+                <definition>primitive://String</definition>
+                <isRequired>true</isRequired>
+                <parameterName>Account_Name</parameterName>
+                <valueExpression>{!$Input:Account_Name}</valueExpression>
+            </parameters>
+            <referenceName
+      >Apex:WealthAIInstitutionalDataProvider</referenceName>
+        </templateDataProviders>
+        <versionIdentifier
+    >WAMInstitutionalMandateBriefingV1=_1</versionIdentifier>
+    </templateVersions>
+    <type>einstein_gpt__flex</type>
+    <visibility>Global</visibility>
+</GenAiPromptTemplate>

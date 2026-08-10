@@ -1,0 +1,106 @@
+<template>
+  <lightning-card title="Advisor Action Center" icon-name="standard:strategy">
+    <div class="slds-p-around_small">
+      <template if:true={loading}>
+        <c-wam-state-panel state="loading"></c-wam-state-panel>
+      </template>
+
+      <template if:true={errorMessage}>
+        <c-wam-state-panel
+          state="error"
+          title="Action Center error"
+          message={errorMessage}
+        ></c-wam-state-panel>
+      </template>
+
+      <template if:true={showNoAccountState}>
+        <c-wam-state-panel
+          state="empty"
+          title="Select a client"
+          message="Pick an account to run AI workflows."
+        ></c-wam-state-panel>
+      </template>
+
+      <template if:true={snapshot}>
+        <div
+          class="slds-grid slds-wrap slds-gutters_x-small slds-m-bottom_x-small"
+        >
+          <template for:each={metricTiles} for:item="tile">
+            <div
+              key={tile.key}
+              class="slds-col slds-size_1-of-2 slds-large-size_1-of-4 slds-p-vertical_xx-small"
+            >
+              <c-wam-metric-tile
+                label={tile.label}
+                value={tile.display}
+                tone={tile.tone}
+                record-url={tile.recordUrl}
+              ></c-wam-metric-tile>
+            </div>
+          </template>
+        </div>
+
+        <div class="action-grid">
+          <div class="action-cell">
+            <lightning-button
+              class="action-button"
+              variant="brand"
+              label="Generate Advisor Briefing"
+              icon-name="utility:file"
+              onclick={handleGenerateBriefing}
+              disabled={actionDisabled}
+              stretch
+            ></lightning-button>
+          </div>
+          <div class="action-cell">
+            <lightning-button
+              class="action-button"
+              variant="brand-outline"
+              label="Generate Relationship Insight"
+              icon-name="utility:einstein"
+              onclick={handleGenerateRelationshipInsight}
+              disabled={actionDisabled}
+              stretch
+            ></lightning-button>
+          </div>
+          <div class="action-cell">
+            <lightning-button
+              class="action-button"
+              variant="neutral"
+              label="Generate Next Best Action"
+              icon-name="utility:advanced_search"
+              onclick={handleGenerateNba}
+              disabled={actionDisabled}
+              stretch
+            ></lightning-button>
+          </div>
+          <div class="action-cell">
+            <lightning-button
+              class="action-button"
+              variant="neutral"
+              label="Refresh Scores"
+              icon-name="utility:refresh"
+              onclick={handleRefreshScores}
+              disabled={actionDisabled}
+              stretch
+            ></lightning-button>
+          </div>
+        </div>
+      </template>
+    </div>
+
+    <template if:true={lastAction}>
+      <div class="slds-p-horizontal_small slds-p-bottom_small">
+        <c-wam-action-result-panel
+          title={lastAction.title}
+          detail={lastAction.detail}
+          tone={lastAction.tone}
+          next-step={lastAction.nextStep}
+          record-url={lastAction.recordUrl}
+          meta-label={priorityMetaLabel}
+          meta-value={lastAction.priority}
+        ></c-wam-action-result-panel>
+      </div>
+    </template>
+  </lightning-card>
+</template>

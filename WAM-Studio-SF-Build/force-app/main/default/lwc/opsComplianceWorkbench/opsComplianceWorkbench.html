@@ -1,0 +1,171 @@
+<template>
+  <lightning-card
+    title="Distribution, Compliance, Operations Workbench"
+    icon-name="standard:work_order_type"
+  >
+    <div class="slds-p-around_small">
+      <lightning-combobox
+        if:false={recordId}
+        name="opsAccountSelector"
+        label="Client / Household"
+        value={selectedAccountId}
+        options={accountOptions}
+        onchange={handleAccountChange}
+      ></lightning-combobox>
+
+      <template if:true={loading}>
+        <c-wam-state-panel state="loading"></c-wam-state-panel>
+      </template>
+
+      <template if:true={errorMessage}>
+        <c-wam-state-panel
+          state="error"
+          title="Workbench error"
+          message={errorMessage}
+        ></c-wam-state-panel>
+      </template>
+
+      <template if:true={snapshot}>
+        <div
+          class="slds-grid slds-wrap slds-gutters_x-small slds-m-bottom_x-small"
+        >
+          <template for:each={metricTiles} for:item="tile">
+            <div
+              key={tile.key}
+              class="slds-col slds-size_1-of-2 slds-large-size_1-of-3 slds-p-vertical_xx-small"
+            >
+              <c-wam-metric-tile
+                label={tile.label}
+                value={tile.display}
+                tone={tile.tone}
+                record-url={tile.recordUrl}
+              ></c-wam-metric-tile>
+            </div>
+          </template>
+        </div>
+
+        <div class="action-panel">
+          <div class="section-title">Distribution</div>
+          <div class="action-grid action-grid_three">
+            <div class="action-cell">
+              <lightning-button
+                stretch
+                label="Run Lead Scoring"
+                onclick={handleLeadScoring}
+                disabled={actionDisabled}
+              ></lightning-button>
+            </div>
+            <div class="action-cell">
+              <lightning-button
+                stretch
+                label="Run Lead Prioritization"
+                onclick={handleLeadPrioritization}
+                disabled={actionDisabled}
+              ></lightning-button>
+            </div>
+            <div class="action-cell">
+              <lightning-button
+                stretch
+                label="Run Prospect Research"
+                onclick={handleProspectResearch}
+                disabled={actionDisabled}
+              ></lightning-button>
+            </div>
+          </div>
+
+          <div class="section-title">Compliance</div>
+          <div class="action-grid action-grid_three">
+            <div class="action-cell">
+              <lightning-button
+                stretch
+                label="Run KYC Copilot"
+                onclick={handleKYC}
+                disabled={actionDisabled}
+              ></lightning-button>
+            </div>
+            <div class="action-cell">
+              <lightning-button
+                stretch
+                label="Run AML Screening"
+                onclick={handleAML}
+                disabled={actionDisabled}
+              ></lightning-button>
+            </div>
+            <div class="action-cell">
+              <lightning-button
+                stretch
+                label="Run Regulatory Monitoring"
+                onclick={handleRegulatory}
+                disabled={actionDisabled}
+              ></lightning-button>
+            </div>
+          </div>
+
+          <div class="section-title">Operations</div>
+          <div class="action-grid action-grid_three">
+            <div class="action-cell">
+              <lightning-button
+                stretch
+                label="Run Onboarding Assistant"
+                onclick={handleOnboarding}
+                disabled={actionDisabled}
+              ></lightning-button>
+            </div>
+            <div class="action-cell">
+              <lightning-button
+                stretch
+                label="Run Document Extraction"
+                onclick={handleDocumentExtraction}
+                disabled={actionDisabled}
+              ></lightning-button>
+            </div>
+            <div class="action-cell">
+              <lightning-button
+                stretch
+                label="Run Workflow Automation"
+                onclick={handleWorkflowAutomation}
+                disabled={actionDisabled}
+              ></lightning-button>
+            </div>
+          </div>
+        </div>
+
+        <div class="slds-grid slds-wrap slds-gutters_small">
+          <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-3">
+            <c-wam-recommendation-list
+              title="Distribution Queue"
+              items={distributionItems}
+              loading={loading}
+            ></c-wam-recommendation-list>
+          </div>
+          <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-3">
+            <c-wam-insight-list
+              title="Compliance Queue"
+              items={complianceItems}
+              loading={loading}
+            ></c-wam-insight-list>
+          </div>
+          <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-3">
+            <c-wam-insight-list
+              title="Operations Queue"
+              items={operationsItems}
+              loading={loading}
+            ></c-wam-insight-list>
+          </div>
+        </div>
+      </template>
+    </div>
+
+    <template if:true={lastAction}>
+      <div class="slds-p-horizontal_small slds-p-bottom_small">
+        <c-wam-action-result-panel
+          title={lastAction.title}
+          detail={lastAction.detail}
+          tone={lastAction.tone}
+          next-step={lastAction.nextStep}
+          record-url={lastAction.recordUrl}
+        ></c-wam-action-result-panel>
+      </div>
+    </template>
+  </lightning-card>
+</template>

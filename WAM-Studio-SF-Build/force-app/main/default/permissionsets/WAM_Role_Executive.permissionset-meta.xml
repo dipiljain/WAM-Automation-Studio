@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>WAM Role - Executive</label>
+    <description
+  >Marks the user as a Wealth AI Studio Executive for role-based homepage content.</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <customPermissions>
+        <enabled>true</enabled>
+        <name>WAM_Executive</name>
+    </customPermissions>
+</PermissionSet>

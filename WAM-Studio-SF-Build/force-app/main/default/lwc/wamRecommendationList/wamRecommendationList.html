@@ -1,0 +1,107 @@
+<template>
+  <lightning-card title={title} icon-name={iconName}>
+    <template if:true={loading}>
+      <c-wam-state-panel state="loading"></c-wam-state-panel>
+    </template>
+
+    <template if:true={hasError}>
+      <c-wam-state-panel
+        state="error"
+        title="Unable to load recommendations"
+        message={errorMessage}
+      ></c-wam-state-panel>
+    </template>
+
+    <template if:true={showEmpty}>
+      <c-wam-state-panel
+        state="empty"
+        title="No recommendations yet"
+        message={emptyMessage}
+      ></c-wam-state-panel>
+    </template>
+
+    <template if:true={hasItems}>
+      <ul
+        class="recommendation-list slds-p-horizontal_small slds-p-bottom_small"
+      >
+        <template for:each={normalizedItems} for:item="item">
+          <li key={item.key} class="recommendation-item">
+            <div class="recommendation-header">
+              <p class="title">{item.title}</p>
+              <span class={item.badgeClass}>
+                <lightning-icon
+                  icon-name={item.badgeIconName}
+                  size="xx-small"
+                  variant="inverse"
+                  class="badge-icon"
+                ></lightning-icon>
+                {item.badgeLabel}
+              </span>
+            </div>
+            <p class="subtitle">{item.subtitle}</p>
+
+            <template if:true={item.isExpanded}>
+              <p class="explanation">
+                <span class="explanation-label">Why:</span>
+                {item.explanation}
+              </p>
+            </template>
+
+            <div class="item-actions">
+              <button
+                class="why-toggle"
+                data-key={item.key}
+                onclick={handleToggleWhy}
+              >
+                {item.toggleLabel}
+              </button>
+              <lightning-button
+                variant={item.ctaVariant}
+                label={item.nextStep}
+                data-key={item.key}
+                data-record-url={item.recordUrl}
+                disabled={item.ctaDisabled}
+                onclick={handleOpenRecord}
+              ></lightning-button>
+            </div>
+
+            <template if:true={item.showFix}>
+              <div class="fix-row">
+                <template if:true={item.fixResult}>
+                  <p class="fix-confirmation">
+                    <lightning-icon
+                      icon-name="utility:success"
+                      size="xx-small"
+                      variant="success"
+                    ></lightning-icon>
+                    Fix queued —
+                    <a href={item.fixResult.recordUrl} target="_blank"
+                      >open workflow</a
+                    >. {item.fixResult.nextStep}
+                  </p>
+                </template>
+                <template if:false={item.fixResult}>
+                  <button
+                    class="fix-button"
+                    data-key={item.key}
+                    data-account-id={item.accountId}
+                    data-title={item.title}
+                    data-subtitle={item.subtitle}
+                    disabled={item.fixDisabled}
+                    onclick={handleGenerateFix}
+                  >
+                    <template if:true={item.fixLoading}>Generating fix…</template>
+                    <template if:false={item.fixLoading}>Generate Fix</template>
+                  </button>
+                  <p if:true={item.fixError} class="fix-error">
+                    {item.fixError}
+                  </p>
+                </template>
+              </div>
+            </template>
+          </li>
+        </template>
+      </ul>
+    </template>
+  </lightning-card>
+</template>

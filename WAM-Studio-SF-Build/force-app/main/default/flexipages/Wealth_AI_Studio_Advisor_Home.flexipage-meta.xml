@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<FlexiPage xmlns="http://soap.sforce.com/2006/04/metadata">
+    <flexiPageRegions>
+        <name>top</name>
+        <type>Region</type>
+        <itemInstances>
+            <componentInstance>
+                <componentName>flexipage:richText</componentName>
+                <identifier>wamAdvisorHomeBanner</identifier>
+                <componentInstanceProperties>
+                    <name>richTextValue</name>
+                    <value
+          >&lt;h2&gt;Advisor Home&lt;/h2&gt;&lt;p&gt;Run advisor briefing, relationship, and growth plays for your client book.&lt;/p&gt;</value>
+                </componentInstanceProperties>
+            </componentInstance>
+        </itemInstances>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <name>bottomLeft</name>
+        <type>Region</type>
+        <itemInstances>
+            <componentInstance>
+                <componentName>c:advisorHomeCard</componentName>
+                <identifier>wamAdvisorPersonaCard</identifier>
+            </componentInstance>
+        </itemInstances>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <name>bottomRight</name>
+        <type>Region</type>
+        <itemInstances>
+            <componentInstance>
+                <componentName>c:advisorActionCenter</componentName>
+                <identifier>wamAdvisorPersonaActionCenter</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentName>c:growthServiceCommandCenter</componentName>
+                <identifier>wamAdvisorPersonaGrowthCenter</identifier>
+            </componentInstance>
+        </itemInstances>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <name>sidebar</name>
+        <type>Region</type>
+        <itemInstances>
+            <componentInstance>
+                <componentName>flexipage:richText</componentName>
+                <identifier>wamAdvisorGettingStarted</identifier>
+                <componentInstanceProperties>
+                    <name>richTextValue</name>
+                    <value
+          >&lt;h3&gt;Advisor workflow&lt;/h3&gt;&lt;p&gt;Start with briefings, execute growth actions, then track recommendation outcomes.&lt;/p&gt;</value>
+                </componentInstanceProperties>
+            </componentInstance>
+        </itemInstances>
+    </flexiPageRegions>
+    <masterLabel>Wealth AI Studio Advisor Home</masterLabel>
+    <template>
+        <name>home:desktopTemplate</name>
+    </template>
+    <type>HomePage</type>
+</FlexiPage>

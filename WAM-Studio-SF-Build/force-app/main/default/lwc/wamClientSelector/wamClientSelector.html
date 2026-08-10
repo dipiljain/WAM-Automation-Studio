@@ -1,0 +1,14 @@
+<template>
+  <div if:false={recordId} class="selector">
+    <lightning-combobox
+      name="clientSelector"
+      label="Client / Household"
+      value={selectedAccountId}
+      options={accountOptions}
+      onchange={handleChange}
+    ></lightning-combobox>
+    <p class="hint slds-text-body_small">
+      Shared across Advisor Action Center &amp; Growth/Service Command Center
+    </p>
+  </div>
+</template>

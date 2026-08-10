@@ -1,0 +1,969 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Wealth AI Use Case Spider Graph</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #f6f8fb;
+        --panel: #ffffff;
+        --ink: #172033;
+        --muted: #637083;
+        --grid: #d7dee8;
+        --blue: #1b63c9;
+        --green: #0f8f61;
+        --orange: #d97008;
+        --purple: #7352c7;
+        --red: #c23934;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family:
+          Inter,
+          Salesforce Sans,
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
+      }
+
+      header {
+        padding: 24px 32px 16px;
+      }
+
+      h1 {
+        margin: 0 0 8px;
+        font-size: 28px;
+      }
+
+      .subtitle {
+        margin: 0;
+        color: var(--muted);
+        font-size: 15px;
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: minmax(680px, 1.5fr) minmax(360px, 0.8fr);
+        gap: 20px;
+        padding: 0 32px 32px;
+      }
+
+      .panel {
+        background: var(--panel);
+        border: 1px solid #e4e9f2;
+        border-radius: 16px;
+        box-shadow: 0 10px 24px rgba(20, 35, 60, 0.08);
+      }
+
+      .chart-panel {
+        padding: 20px;
+      }
+
+      .controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: end;
+        margin-bottom: 14px;
+      }
+
+      label {
+        display: grid;
+        gap: 6px;
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      select {
+        min-width: 180px;
+        padding: 9px 10px;
+        border: 1px solid #c7d1df;
+        border-radius: 10px;
+        background: white;
+        color: var(--ink);
+        font-size: 14px;
+      }
+
+      button {
+        padding: 10px 14px;
+        border: 0;
+        border-radius: 10px;
+        background: var(--blue);
+        color: white;
+        cursor: pointer;
+        font-weight: 700;
+      }
+
+      .chart-wrap {
+        display: grid;
+        grid-template-columns: minmax(440px, 1fr) 260px;
+        gap: 18px;
+        align-items: center;
+      }
+
+      svg {
+        width: 100%;
+        min-height: 560px;
+      }
+
+      .axis-label {
+        fill: var(--ink);
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .tick-label {
+        fill: var(--muted);
+        font-size: 10px;
+      }
+
+      .legend {
+        display: grid;
+        gap: 10px;
+        align-content: center;
+      }
+
+      .legend-item {
+        display: grid;
+        grid-template-columns: 16px 1fr auto;
+        gap: 8px;
+        align-items: center;
+        font-size: 13px;
+      }
+
+      .swatch {
+        width: 14px;
+        height: 14px;
+        border-radius: 4px;
+      }
+
+      .side-panel {
+        padding: 18px;
+        overflow: hidden;
+      }
+
+      .metrics {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        margin-bottom: 14px;
+      }
+
+      .metric {
+        padding: 12px;
+        border: 1px solid #e4e9f2;
+        border-radius: 12px;
+        background: #fbfcff;
+      }
+
+      .metric strong {
+        display: block;
+        font-size: 20px;
+      }
+
+      .metric span {
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 12px;
+      }
+
+      th,
+      td {
+        padding: 8px 6px;
+        border-bottom: 1px solid #edf1f7;
+        text-align: left;
+      }
+
+      th {
+        color: var(--muted);
+        font-size: 11px;
+        text-transform: uppercase;
+      }
+
+      .tier {
+        display: inline-flex;
+        min-width: 24px;
+        justify-content: center;
+        border-radius: 999px;
+        background: #e9f2ff;
+        color: var(--blue);
+        font-weight: 700;
+      }
+
+      @media (max-width: 1080px) {
+        .layout,
+        .chart-wrap {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Wealth AI Use Case Spider Graph</h1>
+      <p class="subtitle">
+        Radar view of Strategic, Operational, AI Readiness, Salesforce Fit, and
+        Demo scores for 40 Wealth AI Studio use cases.
+      </p>
+    </header>
+
+    <main class="layout">
+      <section class="panel chart-panel">
+        <div class="controls">
+          <label>
+            Group by
+            <select id="groupBy">
+              <option value="Tier">Tier</option>
+              <option value="Domain">Domain</option>
+              <option value="Primary Persona">Primary Persona</option>
+              <option value="Use Case">Use Case</option>
+            </select>
+          </label>
+          <label>
+            Highlight
+            <select id="highlight"></select>
+          </label>
+          <button id="reset">Reset</button>
+        </div>
+        <div class="chart-wrap">
+          <svg id="radar" viewBox="0 0 720 640" role="img"></svg>
+          <div class="legend" id="legend"></div>
+        </div>
+      </section>
+
+      <aside class="panel side-panel">
+        <div class="metrics">
+          <div class="metric">
+            <strong id="count">40</strong><span>Use Cases</span>
+          </div>
+          <div class="metric">
+            <strong id="avg">86</strong><span>Avg Score</span>
+          </div>
+          <div class="metric">
+            <strong id="top">97</strong><span>Top Score</span>
+          </div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Use Case</th>
+              <th>Domain</th>
+              <th>Score</th>
+              <th>Tier</th>
+            </tr>
+          </thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </aside>
+    </main>
+
+    <script>
+      const dimensions = [
+        ["St", "Strategic"],
+        ["Op", "Operational"],
+        ["Rd", "AI Readiness"],
+        ["Ft", "Salesforce Fit"],
+        ["Dm", "Demo"],
+      ];
+
+      const data = [
+        {
+          id: 1,
+          "Use Case": "AI Advisor Briefing",
+          Domain: "Advisor",
+          "Primary Persona": "Wealth Advisor",
+          St: 5,
+          Op: 5,
+          Rd: 4,
+          Ft: 5,
+          Dm: 5,
+          Score: 97,
+          Tier: 1,
+        },
+        {
+          id: 2,
+          "Use Case": "Meeting Preparation Copilot",
+          Domain: "Advisor",
+          "Primary Persona": "Wealth Advisor",
+          St: 5,
+          Op: 5,
+          Rd: 4,
+          Ft: 5,
+          Dm: 5,
+          Score: 97,
+          Tier: 1,
+        },
+        {
+          id: 3,
+          "Use Case": "AI Follow-up Generator",
+          Domain: "Advisor",
+          "Primary Persona": "Wealth Advisor",
+          St: 4,
+          Op: 5,
+          Rd: 5,
+          Ft: 5,
+          Dm: 4,
+          Score: 91,
+          Tier: 1,
+        },
+        {
+          id: 4,
+          "Use Case": "Relationship Intelligence",
+          Domain: "Advisor",
+          "Primary Persona": "Wealth Advisor",
+          St: 5,
+          Op: 4,
+          Rd: 4,
+          Ft: 5,
+          Dm: 5,
+          Score: 92,
+          Tier: 1,
+        },
+        {
+          id: 5,
+          "Use Case": "Next Best Action Engine",
+          Domain: "Advisor",
+          "Primary Persona": "Wealth Advisor",
+          St: 5,
+          Op: 4,
+          Rd: 4,
+          Ft: 5,
+          Dm: 5,
+          Score: 92,
+          Tier: 1,
+        },
+        {
+          id: 6,
+          "Use Case": "Portfolio Health Analyzer",
+          Domain: "Portfolio",
+          "Primary Persona": "Portfolio Manager",
+          St: 5,
+          Op: 4,
+          Rd: 4,
+          Ft: 4,
+          Dm: 5,
+          Score: 89,
+          Tier: 1,
+        },
+        {
+          id: 7,
+          "Use Case": "Portfolio Review Copilot",
+          Domain: "Portfolio",
+          "Primary Persona": "Wealth Advisor",
+          St: 4,
+          Op: 5,
+          Rd: 4,
+          Ft: 5,
+          Dm: 5,
+          Score: 91,
+          Tier: 1,
+        },
+        {
+          id: 8,
+          "Use Case": "Portfolio Commentary Generator",
+          Domain: "Portfolio",
+          "Primary Persona": "Portfolio Manager",
+          St: 4,
+          Op: 5,
+          Rd: 5,
+          Ft: 5,
+          Dm: 5,
+          Score: 94,
+          Tier: 1,
+        },
+        {
+          id: 9,
+          "Use Case": "Risk Exposure Detection",
+          Domain: "Portfolio",
+          "Primary Persona": "Portfolio Manager",
+          St: 5,
+          Op: 4,
+          Rd: 4,
+          Ft: 4,
+          Dm: 4,
+          Score: 86,
+          Tier: 1,
+        },
+        {
+          id: 10,
+          "Use Case": "Client 360 Intelligence",
+          Domain: "Client",
+          "Primary Persona": "Wealth Advisor",
+          St: 5,
+          Op: 4,
+          Rd: 5,
+          Ft: 5,
+          Dm: 5,
+          Score: 95,
+          Tier: 1,
+        },
+        {
+          id: 11,
+          "Use Case": "Engagement Scoring",
+          Domain: "Client",
+          "Primary Persona": "Client Service Assoc.",
+          St: 4,
+          Op: 4,
+          Rd: 4,
+          Ft: 5,
+          Dm: 4,
+          Score: 83,
+          Tier: 1,
+        },
+        {
+          id: 12,
+          "Use Case": "Client Health Score",
+          Domain: "Client",
+          "Primary Persona": "Wealth Advisor",
+          St: 5,
+          Op: 4,
+          Rd: 4,
+          Ft: 5,
+          Dm: 4,
+          Score: 89,
+          Tier: 1,
+        },
+        {
+          id: 13,
+          "Use Case": "Lead Scoring",
+          Domain: "Distribution",
+          "Primary Persona": "Distribution Spec.",
+          St: 5,
+          Op: 4,
+          Rd: 5,
+          Ft: 5,
+          Dm: 4,
+          Score: 92,
+          Tier: 1,
+        },
+        {
+          id: 14,
+          "Use Case": "Lead Prioritization",
+          Domain: "Distribution",
+          "Primary Persona": "Distribution Spec.",
+          St: 5,
+          Op: 4,
+          Rd: 5,
+          Ft: 5,
+          Dm: 4,
+          Score: 92,
+          Tier: 1,
+        },
+        {
+          id: 15,
+          "Use Case": "Prospect Research Agent",
+          Domain: "Distribution",
+          "Primary Persona": "Distribution Spec.",
+          St: 4,
+          Op: 5,
+          Rd: 3,
+          Ft: 4,
+          Dm: 5,
+          Score: 85,
+          Tier: 1,
+        },
+        {
+          id: 16,
+          "Use Case": "KYC Copilot",
+          Domain: "Compliance",
+          "Primary Persona": "Compliance Officer",
+          St: 4,
+          Op: 5,
+          Rd: 4,
+          Ft: 4,
+          Dm: 5,
+          Score: 88,
+          Tier: 1,
+        },
+        {
+          id: 17,
+          "Use Case": "AML Screening Assistant",
+          Domain: "Compliance",
+          "Primary Persona": "Compliance Officer",
+          St: 4,
+          Op: 5,
+          Rd: 4,
+          Ft: 4,
+          Dm: 4,
+          Score: 85,
+          Tier: 1,
+        },
+        {
+          id: 18,
+          "Use Case": "Regulatory Monitoring Agent",
+          Domain: "Compliance",
+          "Primary Persona": "Compliance Officer",
+          St: 4,
+          Op: 4,
+          Rd: 3,
+          Ft: 4,
+          Dm: 5,
+          Score: 80,
+          Tier: 1,
+        },
+        {
+          id: 19,
+          "Use Case": "Onboarding Assistant",
+          Domain: "Operations",
+          "Primary Persona": "Operations Analyst",
+          St: 4,
+          Op: 5,
+          Rd: 4,
+          Ft: 5,
+          Dm: 5,
+          Score: 91,
+          Tier: 1,
+        },
+        {
+          id: 20,
+          "Use Case": "Document Extraction Agent",
+          Domain: "Operations",
+          "Primary Persona": "Operations Analyst",
+          St: 3,
+          Op: 5,
+          Rd: 4,
+          Ft: 4,
+          Dm: 5,
+          Score: 82,
+          Tier: 1,
+        },
+        {
+          id: 21,
+          "Use Case": "Workflow Automation Agent",
+          Domain: "Operations",
+          "Primary Persona": "Operations Analyst",
+          St: 3,
+          Op: 5,
+          Rd: 4,
+          Ft: 5,
+          Dm: 4,
+          Score: 82,
+          Tier: 1,
+        },
+        {
+          id: 22,
+          "Use Case": "Advisor Productivity Dashboard",
+          Domain: "Executive",
+          "Primary Persona": "Branch Manager",
+          St: 4,
+          Op: 4,
+          Rd: 5,
+          Ft: 5,
+          Dm: 5,
+          Score: 89,
+          Tier: 1,
+        },
+        {
+          id: 23,
+          "Use Case": "Revenue Intelligence Dashboard",
+          Domain: "Executive",
+          "Primary Persona": "Branch Manager",
+          St: 5,
+          Op: 3,
+          Rd: 5,
+          Ft: 5,
+          Dm: 5,
+          Score: 90,
+          Tier: 1,
+        },
+        {
+          id: 24,
+          "Use Case": "Proposal Copilot",
+          Domain: "Advisor",
+          "Primary Persona": "Wealth Advisor",
+          St: 5,
+          Op: 4,
+          Rd: 3,
+          Ft: 4,
+          Dm: 5,
+          Score: 86,
+          Tier: 2,
+        },
+        {
+          id: 25,
+          "Use Case": "Referral Intelligence",
+          Domain: "Distribution",
+          "Primary Persona": "Distribution Spec.",
+          St: 4,
+          Op: 3,
+          Rd: 3,
+          Ft: 4,
+          Dm: 4,
+          Score: 72,
+          Tier: 2,
+        },
+        {
+          id: 26,
+          "Use Case": "Cross-Sell Intelligence",
+          Domain: "Client",
+          "Primary Persona": "Wealth Advisor",
+          St: 5,
+          Op: 3,
+          Rd: 4,
+          Ft: 5,
+          Dm: 4,
+          Score: 84,
+          Tier: 2,
+        },
+        {
+          id: 27,
+          "Use Case": "Scenario Analysis Agent",
+          Domain: "Portfolio",
+          "Primary Persona": "Portfolio Manager",
+          St: 4,
+          Op: 4,
+          Rd: 3,
+          Ft: 3,
+          Dm: 5,
+          Score: 77,
+          Tier: 2,
+        },
+        {
+          id: 28,
+          "Use Case": "Service Resolution Copilot",
+          Domain: "Service",
+          "Primary Persona": "Client Service Assoc.",
+          St: 3,
+          Op: 5,
+          Rd: 4,
+          Ft: 5,
+          Dm: 4,
+          Score: 82,
+          Tier: 2,
+        },
+        {
+          id: 29,
+          "Use Case": "Predictive Attrition",
+          Domain: "Client",
+          "Primary Persona": "Wealth Advisor",
+          St: 5,
+          Op: 3,
+          Rd: 4,
+          Ft: 5,
+          Dm: 4,
+          Score: 84,
+          Tier: 2,
+        },
+        {
+          id: 30,
+          "Use Case": "Compliance Surveillance",
+          Domain: "Compliance",
+          "Primary Persona": "Compliance Officer",
+          St: 4,
+          Op: 4,
+          Rd: 3,
+          Ft: 4,
+          Dm: 4,
+          Score: 77,
+          Tier: 2,
+        },
+        {
+          id: 31,
+          "Use Case": "Reconciliation Assistant",
+          Domain: "Operations",
+          "Primary Persona": "Operations Analyst",
+          St: 3,
+          Op: 5,
+          Rd: 3,
+          Ft: 3,
+          Dm: 4,
+          Score: 73,
+          Tier: 2,
+        },
+        {
+          id: 32,
+          "Use Case": "Cash Movement Intelligence",
+          Domain: "Operations",
+          "Primary Persona": "Operations Analyst",
+          St: 3,
+          Op: 4,
+          Rd: 3,
+          Ft: 4,
+          Dm: 4,
+          Score: 71,
+          Tier: 2,
+        },
+        {
+          id: 33,
+          "Use Case": "Autonomous Advisor Agent",
+          Domain: "Advisor",
+          "Primary Persona": "Wealth Advisor",
+          St: 5,
+          Op: 5,
+          Rd: 2,
+          Ft: 4,
+          Dm: 5,
+          Score: 88,
+          Tier: 3,
+        },
+        {
+          id: 34,
+          "Use Case": "Autonomous Service Agent",
+          Domain: "Service",
+          "Primary Persona": "Client Service Assoc.",
+          St: 4,
+          Op: 5,
+          Rd: 3,
+          Ft: 5,
+          Dm: 5,
+          Score: 88,
+          Tier: 3,
+        },
+        {
+          id: 35,
+          "Use Case": "Autonomous Operations Agent",
+          Domain: "Operations",
+          "Primary Persona": "Operations Analyst",
+          St: 4,
+          Op: 5,
+          Rd: 2,
+          Ft: 4,
+          Dm: 4,
+          Score: 79,
+          Tier: 3,
+        },
+        {
+          id: 36,
+          "Use Case": "Autonomous Compliance Agent",
+          Domain: "Compliance",
+          "Primary Persona": "Compliance Officer",
+          St: 4,
+          Op: 4,
+          Rd: 2,
+          Ft: 4,
+          Dm: 4,
+          Score: 74,
+          Tier: 3,
+        },
+        {
+          id: 37,
+          "Use Case": "Autonomous Prospecting Agent",
+          Domain: "Distribution",
+          "Primary Persona": "Distribution Spec.",
+          St: 4,
+          Op: 4,
+          Rd: 2,
+          Ft: 4,
+          Dm: 4,
+          Score: 74,
+          Tier: 3,
+        },
+        {
+          id: 38,
+          "Use Case": "AI Branch Manager",
+          Domain: "Executive",
+          "Primary Persona": "Branch Manager",
+          St: 4,
+          Op: 3,
+          Rd: 2,
+          Ft: 4,
+          Dm: 5,
+          Score: 72,
+          Tier: 3,
+        },
+        {
+          id: 39,
+          "Use Case": "Autonomous Portfolio Monitoring",
+          Domain: "Portfolio",
+          "Primary Persona": "Portfolio Manager",
+          St: 4,
+          Op: 4,
+          Rd: 3,
+          Ft: 4,
+          Dm: 5,
+          Score: 80,
+          Tier: 3,
+        },
+        {
+          id: 40,
+          "Use Case": "Hyper-Personalized Engagement",
+          Domain: "Client",
+          "Primary Persona": "End Client",
+          St: 5,
+          Op: 3,
+          Rd: 2,
+          Ft: 4,
+          Dm: 5,
+          Score: 78,
+          Tier: 3,
+        },
+      ];
+
+      const colors = [
+        "#1b63c9",
+        "#0f8f61",
+        "#d97008",
+        "#7352c7",
+        "#c23934",
+        "#0b827c",
+        "#ba5cab",
+        "#5867e8",
+        "#54698d",
+        "#2e844a",
+      ];
+      const svg = document.getElementById("radar");
+      const groupBy = document.getElementById("groupBy");
+      const highlight = document.getElementById("highlight");
+      const legend = document.getElementById("legend");
+      const rows = document.getElementById("rows");
+
+      function polarPoint(index, value, radius = 245) {
+        const angle = -Math.PI / 2 + (Math.PI * 2 * index) / dimensions.length;
+        const scaled = (value / 5) * radius;
+        return [360 + Math.cos(angle) * scaled, 320 + Math.sin(angle) * scaled];
+      }
+
+      function toPoints(values) {
+        return dimensions
+          .map(([key], index) => polarPoint(index, values[key]).join(","))
+          .join(" ");
+      }
+
+      function aggregate(field) {
+        const groups = new Map();
+        data.forEach((item) => {
+          const name = String(item[field]);
+          if (!groups.has(name)) groups.set(name, []);
+          groups.get(name).push(item);
+        });
+        return [...groups.entries()].map(([name, items]) => {
+          const values = {};
+          dimensions.forEach(([key]) => {
+            values[key] =
+              items.reduce((sum, item) => sum + item[key], 0) / items.length;
+          });
+          return {
+            name,
+            values,
+            count: items.length,
+            score:
+              items.reduce((sum, item) => sum + item.Score, 0) / items.length,
+            items,
+          };
+        });
+      }
+
+      function drawGrid() {
+        let markup = "";
+        for (let level = 1; level <= 5; level++) {
+          const points = dimensions
+            .map((_, index) => polarPoint(index, level).join(","))
+            .join(" ");
+          markup += `<polygon points="${points}" fill="none" stroke="var(--grid)" stroke-width="1" />`;
+          markup += `<text x="365" y="${320 - (level / 5) * 245 + 4}" class="tick-label">${level}</text>`;
+        }
+        dimensions.forEach(([, label], index) => {
+          const [x, y] = polarPoint(index, 5.55);
+          const [x2, y2] = polarPoint(index, 5);
+          markup += `<line x1="360" y1="320" x2="${x2}" y2="${y2}" stroke="var(--grid)" />`;
+          markup += `<text x="${x}" y="${y}" text-anchor="middle" dominant-baseline="middle" class="axis-label">${label}</text>`;
+        });
+        return markup;
+      }
+
+      function updateHighlightOptions(groups) {
+        const current = highlight.value;
+        highlight.innerHTML =
+          `<option value="">All</option>` +
+          groups
+            .map(
+              (group) => `<option value="${group.name}">${group.name}</option>`,
+            )
+            .join("");
+        if ([...highlight.options].some((option) => option.value === current)) {
+          highlight.value = current;
+        }
+      }
+
+      function render() {
+        const groups = aggregate(groupBy.value).sort(
+          (a, b) => b.score - a.score,
+        );
+        updateHighlightOptions(groups);
+        const selected = highlight.value;
+        const visible = selected
+          ? groups.filter((group) => group.name === selected)
+          : groups;
+        const limited = visible.slice(
+          0,
+          groupBy.value === "Use Case" && !selected ? 10 : visible.length,
+        );
+
+        let markup = drawGrid();
+        limited.forEach((group, index) => {
+          const color = colors[index % colors.length];
+          markup += `<polygon points="${toPoints(group.values)}" fill="${color}" fill-opacity="0.16" stroke="${color}" stroke-width="3" />`;
+          dimensions.forEach(([key], axisIndex) => {
+            const [x, y] = polarPoint(axisIndex, group.values[key]);
+            markup += `<circle cx="${x}" cy="${y}" r="4" fill="${color}" />`;
+          });
+        });
+        svg.innerHTML = markup;
+
+        legend.innerHTML = limited
+          .map((group, index) => {
+            const color = colors[index % colors.length];
+            return `<div class="legend-item"><span class="swatch" style="background:${color}"></span><span>${group.name}</span><strong>${group.score.toFixed(0)}</strong></div>`;
+          })
+          .join("");
+
+        const tableRows = (
+          selected ? visible.flatMap((group) => group.items) : data
+        )
+          .slice()
+          .sort((a, b) => b.Score - a.Score)
+          .map(
+            (item) =>
+              `<tr><td>${item.id}</td><td>${item["Use Case"]}</td><td>${item.Domain}</td><td>${item.Score}</td><td><span class="tier">${item.Tier}</span></td></tr>`,
+          )
+          .join("");
+        rows.innerHTML = tableRows;
+
+        const activeRows = selected
+          ? visible.flatMap((group) => group.items)
+          : data;
+        document.getElementById("count").textContent = activeRows.length;
+        document.getElementById("avg").textContent = Math.round(
+          activeRows.reduce((sum, item) => sum + item.Score, 0) /
+            activeRows.length,
+        );
+        document.getElementById("top").textContent = Math.max(
+          ...activeRows.map((item) => item.Score),
+        );
+      }
+
+      groupBy.addEventListener("change", () => {
+        highlight.value = "";
+        render();
+      });
+      highlight.addEventListener("change", render);
+      document.getElementById("reset").addEventListener("click", () => {
+        groupBy.value = "Tier";
+        highlight.value = "";
+        render();
+      });
+
+      render();
+    </script>
+  </body>
+</html>

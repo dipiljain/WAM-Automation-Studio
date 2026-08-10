@@ -1,0 +1,233 @@
+<template>
+  <lightning-card
+    title="Growth and Service Command Center"
+    icon-name="standard:service_appointment"
+  >
+    <div class="slds-p-around_small">
+      <template if:true={loading}>
+        <c-wam-state-panel state="loading"></c-wam-state-panel>
+      </template>
+
+      <template if:true={errorMessage}>
+        <c-wam-state-panel
+          state="error"
+          title="Command center error"
+          message={errorMessage}
+        ></c-wam-state-panel>
+      </template>
+
+      <template if:true={snapshot}>
+        <lightning-accordion
+          active-section-name={activeSectionName}
+          onsectiontoggle={handleSectionToggle}
+        >
+          <lightning-accordion-section
+            name="growth"
+            label="Growth Intelligence"
+          >
+            <lightning-badge
+              label="4 actions"
+              class="slds-m-bottom_x-small"
+            ></lightning-badge>
+            <div
+              class="slds-grid slds-wrap slds-gutters_x-small slds-m-bottom_x-small"
+            >
+              <template for:each={growthMetricTiles} for:item="tile">
+                <div
+                  key={tile.key}
+                  class="slds-col slds-size_1-of-2 slds-large-size_1-of-3 slds-p-vertical_xx-small"
+                >
+                  <c-wam-metric-tile
+                    label={tile.label}
+                    value={tile.display}
+                    tone={tile.tone}
+                    record-url={tile.recordUrl}
+                  ></c-wam-metric-tile>
+                </div>
+              </template>
+            </div>
+            <div class="action-grid action-grid_four slds-m-bottom_small">
+              <div class="action-cell">
+                <lightning-button
+                  stretch
+                  class="action-button"
+                  variant="brand"
+                  icon-name="utility:file"
+                  label="Run Proposal Copilot"
+                  onclick={handleProposalCopilot}
+                  disabled={actionDisabled}
+                ></lightning-button>
+              </div>
+              <div class="action-cell">
+                <lightning-button
+                  stretch
+                  class="action-button"
+                  icon-name="utility:share"
+                  label="Run Referral Intelligence"
+                  onclick={handleReferralIntelligence}
+                  disabled={actionDisabled}
+                ></lightning-button>
+              </div>
+              <div class="action-cell">
+                <lightning-button
+                  stretch
+                  class="action-button"
+                  icon-name="utility:trending"
+                  label="Run Cross-Sell Intelligence"
+                  onclick={handleCrossSell}
+                  disabled={actionDisabled}
+                ></lightning-button>
+              </div>
+              <div class="action-cell">
+                <lightning-button
+                  stretch
+                  class="action-button"
+                  icon-name="utility:chart"
+                  label="Run Scenario Analysis"
+                  onclick={handleScenarioAnalysis}
+                  disabled={actionDisabled}
+                ></lightning-button>
+              </div>
+            </div>
+            <c-wam-recommendation-list
+              title="Growth Queue"
+              items={growthItems}
+              loading={loading}
+            ></c-wam-recommendation-list>
+          </lightning-accordion-section>
+
+          <lightning-accordion-section
+            name="service"
+            label="Service and Retention"
+          >
+            <lightning-badge
+              label={serviceAlertsLabel}
+              class="slds-m-bottom_x-small"
+            ></lightning-badge>
+            <div
+              class="slds-grid slds-wrap slds-gutters_x-small slds-m-bottom_x-small"
+            >
+              <template for:each={serviceMetricTiles} for:item="tile">
+                <div
+                  key={tile.key}
+                  class="slds-col slds-size_1-of-2 slds-p-vertical_xx-small"
+                >
+                  <c-wam-metric-tile
+                    label={tile.label}
+                    value={tile.display}
+                    tone={tile.tone}
+                    record-url={tile.recordUrl}
+                  ></c-wam-metric-tile>
+                </div>
+              </template>
+            </div>
+            <div class="action-grid action-grid_three slds-m-bottom_small">
+              <div class="action-cell">
+                <lightning-button
+                  stretch
+                  class="action-button"
+                  variant="brand"
+                  icon-name="utility:warning"
+                  label="Run Predictive Attrition"
+                  onclick={handlePredictiveAttrition}
+                  disabled={actionDisabled}
+                ></lightning-button>
+              </div>
+              <div class="action-cell">
+                <lightning-button
+                  stretch
+                  class="action-button"
+                  icon-name="utility:case"
+                  label="Run Service Resolution"
+                  onclick={handleServiceResolution}
+                  disabled={actionDisabled}
+                ></lightning-button>
+              </div>
+              <div class="action-cell">
+                <lightning-button
+                  stretch
+                  class="action-button"
+                  icon-name="utility:shield"
+                  label="Run Compliance Surveillance"
+                  onclick={handleSurveillance}
+                  disabled={actionDisabled}
+                ></lightning-button>
+              </div>
+            </div>
+            <c-wam-insight-list
+              title="Service Queue"
+              items={serviceItems}
+              loading={loading}
+            ></c-wam-insight-list>
+          </lightning-accordion-section>
+
+          <lightning-accordion-section
+            name="controls"
+            label="Operations Controls"
+          >
+            <lightning-badge
+              label={controlOpenLabel}
+              class="slds-m-bottom_x-small"
+            ></lightning-badge>
+            <div
+              class="slds-grid slds-wrap slds-gutters_x-small slds-m-bottom_x-small"
+            >
+              <template for:each={controlMetricTiles} for:item="tile">
+                <div
+                  key={tile.key}
+                  class="slds-col slds-size_1-of-2 slds-p-vertical_xx-small"
+                >
+                  <c-wam-metric-tile
+                    label={tile.label}
+                    value={tile.display}
+                    tone={tile.tone}
+                    record-url={tile.recordUrl}
+                  ></c-wam-metric-tile>
+                </div>
+              </template>
+            </div>
+            <div class="action-grid action-grid_two slds-m-bottom_small">
+              <div class="action-cell">
+                <lightning-button
+                  stretch
+                  class="action-button"
+                  icon-name="utility:sync"
+                  label="Run Reconciliation Assistant"
+                  onclick={handleReconciliation}
+                  disabled={actionDisabled}
+                ></lightning-button>
+              </div>
+              <div class="action-cell">
+                <lightning-button
+                  stretch
+                  class="action-button"
+                  icon-name="utility:moneybag"
+                  label="Run Cash Movement Intelligence"
+                  onclick={handleCashMovement}
+                  disabled={actionDisabled}
+                ></lightning-button>
+              </div>
+            </div>
+            <c-wam-insight-list
+              title="Controls Queue"
+              items={controlItems}
+              loading={loading}
+            ></c-wam-insight-list>
+          </lightning-accordion-section>
+        </lightning-accordion>
+      </template>
+    </div>
+
+    <template if:true={lastAction}>
+      <div class="slds-p-horizontal_small slds-p-bottom_small">
+        <c-wam-action-result-panel
+          title={lastAction.title}
+          detail={lastAction.detail}
+          tone={lastAction.tone}
+          next-step={lastAction.nextStep}
+          record-url={lastAction.recordUrl}
+        ></c-wam-action-result-panel>
+      </div>
+    </template>
+  </lightning-card>
+</template>

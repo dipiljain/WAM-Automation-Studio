@@ -54,4 +54,58 @@ public with sharing class WealthAIStudioService {
         }
         return 'Low';
     }
+
+    public class FixResult {
+        @AuraEnabled
+        public Id recordId;
+        @AuraEnabled
+        public String detail;
+        @AuraEnabled
+        public String nextStep;
+    }
+
+    @AuraEnabled
+    public static FixResult generateActionableFix(Id accountId, String issueTitle, String issueDetail) {
+        if (accountId == null) {
+            throw new AuraHandledException('An account is required to generate a fix.');
+        }
+        Automation_Template__c template = ensureRemediationTemplate();
+        String details = 'Remediation for "' +
+            (String.isBlank(issueTitle) ? 'flagged item' : issueTitle) +
+            '": ' +
+            (String.isBlank(issueDetail) ? 'Review the flagged item and take corrective action.' : issueDetail);
+        Workflow_Execution__c execution = new Workflow_Execution__c(
+            Account__c = accountId,
+            Automation_Template__c = template.Id,
+            Status__c = 'Queued',
+            Details__c = details
+        );
+        insert execution;
+
+        FixResult result = new FixResult();
+        result.recordId = execution.Id;
+        result.detail = details;
+        result.nextStep = 'Review and execute the queued remediation workflow.';
+        return result;
+    }
+
+    private static Automation_Template__c ensureRemediationTemplate() {
+        String templateName = 'WAM Remediation Template';
+        List<Automation_Template__c> existing = [
+            SELECT Id
+            FROM Automation_Template__c
+            WHERE Name = :templateName
+            LIMIT 1
+        ];
+        if (!existing.isEmpty()) {
+            return existing[0];
+        }
+        Automation_Template__c template = new Automation_Template__c(
+            Name = templateName,
+            Category__c = 'Remediation',
+            Instructions__c = 'Auto-generated template for actionable-fix remediation workflows.'
+        );
+        insert template;
+        return template;
+    }
 }

@@ -1,0 +1,38 @@
+<template>
+  <template if:true={showCard}>
+    <c-wam-briefing-header
+      persona-label="Executive"
+      subtitle="Track AI-driven pipeline value, agent adoption, and firm-wide client health."
+      icon-name="utility:einstein"
+      theme="executive"
+      focus-headline={focusHeadline}
+      show-reset="true"
+      reset-label="Reset dashboard"
+      onreset={handleReset}
+    ></c-wam-briefing-header>
+
+    <div class="slds-grid slds-wrap slds-gutters_small">
+      <div class="slds-col slds-size_1-of-1">
+        <c-wam-metric-tiles
+          title="Executive Pulse"
+          icon-name="standard:dashboard"
+          subtitle="Firm-wide AI performance snapshot."
+          tiles={metricTiles}
+          loading={metricsLoading}
+          error-message={metricError}
+        ></c-wam-metric-tiles>
+      </div>
+
+      <div class="slds-col slds-size_1-of-1">
+        <c-wam-insight-list
+          title="Awaiting Your Approval"
+          icon-name="utility:decision"
+          items={priorityItems}
+          loading={priorityLoading}
+          error-message={priorityError}
+          empty-message="No autonomous agent actions are waiting on human-in-the-loop approval."
+        ></c-wam-insight-list>
+      </div>
+    </div>
+  </template>
+</template>

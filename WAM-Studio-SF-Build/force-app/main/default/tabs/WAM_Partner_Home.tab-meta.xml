@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomTab xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description
+  >Partner program (B2B2C) manager home page for Wealth AI Studio.</description>
+    <flexiPage>Wealth_AI_Studio_Partner_Page</flexiPage>
+    <label>Partner Home</label>
+    <motif>Custom14: Hands</motif>
+</CustomTab>

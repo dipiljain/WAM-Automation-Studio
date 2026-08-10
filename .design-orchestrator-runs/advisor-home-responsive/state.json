@@ -1,0 +1,11 @@
+{
+  "status": "incomplete",
+  "iteration": 1,
+  "finalVerdict": "incomplete",
+  "blockingFindings": 0,
+  "majorFindings": 0,
+  "artifacts": {
+    "latestDesignerArtifact": "iterations/01-designer-output.md",
+    "latestReviewerArtifact": "iterations/01-reviewer-failure.md"
+  }
+}

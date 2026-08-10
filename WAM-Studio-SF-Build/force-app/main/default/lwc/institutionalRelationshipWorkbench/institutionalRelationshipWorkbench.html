@@ -1,0 +1,209 @@
+<template>
+  <lightning-card
+    title="Institutional Relationship Workbench"
+    icon-name="standard:account"
+  >
+    <div class="slds-p-around_small">
+      <div class="context-bar">
+        <div class="context-bar_selector">
+          <lightning-combobox
+            if:false={recordId}
+            name="institutionalAccountSelector"
+            label="Institutional Account"
+            value={selectedAccountId}
+            options={accountOptions}
+            onchange={handleAccountChange}
+          ></lightning-combobox>
+        </div>
+        <template if:true={selectedAccountLabel}>
+          <div class="context-bar_badge">
+            <lightning-icon
+              icon-name="standard:account"
+              size="x-small"
+            ></lightning-icon>
+            <span class="slds-truncate">{selectedAccountLabel}</span>
+            <span class="context-bar_tag">Institutional</span>
+          </div>
+        </template>
+      </div>
+
+      <template if:true={loading}>
+        <c-wam-state-panel state="loading"></c-wam-state-panel>
+      </template>
+
+      <template if:true={errorMessage}>
+        <c-wam-state-panel
+          state="error"
+          title="Workbench error"
+          message={errorMessage}
+        ></c-wam-state-panel>
+      </template>
+
+      <template if:true={snapshot}>
+        <template if:false={hasActivity}>
+          <div class="slds-m-bottom_small">
+            <c-wam-state-panel
+              state="empty"
+              title="No institutional activity recorded yet"
+              message="This account has no mandates, proposals, or risk signals on file. Run an action below, such as Mandate Compliance Check or KYB Onboarding, to start building its institutional record."
+            ></c-wam-state-panel>
+          </div>
+        </template>
+
+        <div
+          class="slds-grid slds-wrap slds-gutters_x-small slds-m-bottom_small"
+        >
+          <template for:each={metricTiles} for:item="tile">
+            <div
+              key={tile.key}
+              class="slds-col slds-size_1-of-2 slds-large-size_1-of-3 slds-p-vertical_xx-small"
+            >
+              <c-wam-metric-tile
+                label={tile.label}
+                value={tile.display}
+                tone={tile.tone}
+                record-url={tile.recordUrl}
+              ></c-wam-metric-tile>
+            </div>
+          </template>
+        </div>
+
+        <div class="action-panel">
+          <div class="action-section action-section_mandate">
+            <div class="section-title">
+              <lightning-icon
+                icon-name="utility:file"
+                size="x-small"
+                class="section-icon"
+              ></lightning-icon>
+              <span>Mandate &amp; Proposal</span>
+            </div>
+            <div class="action-grid action-grid_three">
+              <div class="action-cell">
+                <lightning-button
+                  stretch
+                  variant="brand-outline"
+                  icon-name="utility:shield"
+                  label="Run Mandate Compliance Check"
+                  onclick={handleMandateCheck}
+                  disabled={actionDisabled}
+                ></lightning-button>
+              </div>
+              <div class="action-cell">
+                <lightning-button
+                  stretch
+                  variant="brand-outline"
+                  icon-name="utility:file"
+                  label="Run Institutional Proposal Copilot"
+                  onclick={handleProposalCopilot}
+                  disabled={actionDisabled}
+                ></lightning-button>
+              </div>
+              <div class="action-cell">
+                <lightning-button
+                  stretch
+                  variant="brand-outline"
+                  icon-name="utility:chart"
+                  label="Generate Committee Report"
+                  onclick={handleCommitteeReport}
+                  disabled={actionDisabled}
+                ></lightning-button>
+              </div>
+            </div>
+          </div>
+
+          <div class="action-section action-section_risk">
+            <div class="section-title">
+              <lightning-icon
+                icon-name="utility:warning"
+                size="x-small"
+                class="section-icon"
+              ></lightning-icon>
+              <span>Onboarding &amp; Risk</span>
+            </div>
+            <div class="action-grid action-grid_three">
+              <div class="action-cell">
+                <lightning-button
+                  stretch
+                  variant="neutral"
+                  icon-name="utility:case"
+                  label="Run Institutional KYB Onboarding"
+                  onclick={handleKYBOnboarding}
+                  disabled={actionDisabled}
+                ></lightning-button>
+              </div>
+              <div class="action-cell">
+                <lightning-button
+                  stretch
+                  variant="neutral"
+                  icon-name="utility:warning"
+                  label="Run Institutional Risk Surveillance"
+                  onclick={handleRiskSurveillance}
+                  disabled={actionDisabled}
+                ></lightning-button>
+              </div>
+              <div class="action-cell">
+                <lightning-button
+                  stretch
+                  variant="neutral"
+                  icon-name="utility:trending"
+                  label="Run Institutional Liquidity Forecast"
+                  onclick={handleLiquidityForecast}
+                  disabled={actionDisabled}
+                ></lightning-button>
+              </div>
+            </div>
+          </div>
+
+          <div class="action-section action-section_autonomous">
+            <div class="section-title">
+              <lightning-icon
+                icon-name="utility:einstein"
+                size="x-small"
+                class="section-icon"
+              ></lightning-icon>
+              <span>Autonomous</span>
+              <span class="agentic-badge">AI Agent</span>
+            </div>
+            <div class="action-grid action-grid_three">
+              <div class="action-cell">
+                <lightning-button
+                  stretch
+                  variant="brand"
+                  icon-name="utility:einstein"
+                  label="Run Autonomous Institutional Monitoring"
+                  onclick={handleAutonomousMonitoring}
+                  disabled={actionDisabled}
+                ></lightning-button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="slds-grid slds-wrap slds-gutters_small">
+          <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-2">
+            <c-wam-insight-list
+              title="Key Stakeholders"
+              icon-name="standard:contact"
+              items={stakeholderItems}
+              loading={loading}
+              empty-message="Stakeholder contacts will appear here once linked to this institutional account."
+            ></c-wam-insight-list>
+          </div>
+        </div>
+      </template>
+    </div>
+
+    <template if:true={lastAction}>
+      <div class="slds-p-horizontal_small slds-p-bottom_small">
+        <c-wam-action-result-panel
+          title={lastAction.title}
+          detail={lastAction.detail}
+          tone={lastAction.tone}
+          next-step={lastAction.nextStep}
+          record-url={lastAction.recordUrl}
+        ></c-wam-action-result-panel>
+      </div>
+    </template>
+  </lightning-card>
+</template>

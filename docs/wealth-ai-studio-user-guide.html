@@ -1,0 +1,990 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Wealth AI Studio User Guide</title>
+    <style>
+      :root {
+        --bg: #f5f7fb;
+        --panel: #ffffff;
+        --ink: #172033;
+        --muted: #5f6b7a;
+        --line: #d9e2ef;
+        --brand: #0b5cab;
+        --brand-2: #0176d3;
+        --success: #2e844a;
+        --warning: #dd7a01;
+        --critical: #ba0517;
+        --neutral: #747474;
+        --shadow: 0 10px 24px rgba(23, 32, 51, 0.08);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family:
+          Inter,
+          ui-sans-serif,
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
+        line-height: 1.55;
+      }
+
+      a {
+        color: var(--brand);
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: 280px minmax(0, 1fr);
+        min-height: 100vh;
+      }
+
+      .sidebar {
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        overflow: auto;
+        padding: 24px 20px;
+        background: #071b35;
+        color: #ffffff;
+      }
+
+      .sidebar h1 {
+        margin: 0 0 8px;
+        font-size: 1.25rem;
+        line-height: 1.2;
+      }
+
+      .sidebar .subtitle {
+        margin: 0 0 24px;
+        color: #bfd7f2;
+        font-size: 0.9rem;
+      }
+
+      .sidebar nav {
+        display: grid;
+        gap: 6px;
+      }
+
+      .sidebar a {
+        display: block;
+        padding: 8px 10px;
+        border-radius: 10px;
+        color: #ffffff;
+        font-size: 0.92rem;
+      }
+
+      .sidebar a:hover {
+        background: rgba(255, 255, 255, 0.12);
+        text-decoration: none;
+      }
+
+      .content {
+        padding: 32px;
+      }
+
+      .hero {
+        padding: 36px;
+        border-radius: 24px;
+        background:
+          radial-gradient(
+            circle at top right,
+            rgba(1, 118, 211, 0.18),
+            transparent 34%
+          ),
+          linear-gradient(135deg, #ffffff, #eef6ff);
+        box-shadow: var(--shadow);
+      }
+
+      .hero h2 {
+        margin: 0 0 12px;
+        font-size: clamp(2rem, 4vw, 3.25rem);
+        line-height: 1.05;
+      }
+
+      .hero p {
+        max-width: 900px;
+        margin: 0;
+        color: var(--muted);
+        font-size: 1.1rem;
+      }
+
+      .meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 20px;
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: #eaf4ff;
+        color: #084b8a;
+        font-weight: 700;
+        font-size: 0.82rem;
+      }
+
+      section {
+        margin-top: 28px;
+      }
+
+      .card {
+        padding: 24px;
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        background: var(--panel);
+        box-shadow: var(--shadow);
+      }
+
+      .card h2,
+      .card h3 {
+        margin-top: 0;
+      }
+
+      .grid {
+        display: grid;
+        gap: 16px;
+      }
+
+      .grid.two {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .grid.three {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .grid.four {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+
+      .mini-card {
+        padding: 18px;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: #ffffff;
+      }
+
+      .mini-card h3 {
+        margin: 0 0 8px;
+        font-size: 1.05rem;
+      }
+
+      .mini-card p,
+      .mini-card li {
+        color: var(--muted);
+      }
+
+      .step {
+        display: grid;
+        grid-template-columns: 34px 1fr;
+        gap: 12px;
+        align-items: start;
+        margin: 14px 0;
+      }
+
+      .step-number {
+        display: grid;
+        place-items: center;
+        width: 34px;
+        height: 34px;
+        border-radius: 999px;
+        background: var(--brand);
+        color: #ffffff;
+        font-weight: 800;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        overflow: hidden;
+        border-radius: 14px;
+        font-size: 0.94rem;
+      }
+
+      th,
+      td {
+        padding: 12px;
+        border-bottom: 1px solid var(--line);
+        text-align: left;
+        vertical-align: top;
+      }
+
+      th {
+        background: #eef4fb;
+        color: #253858;
+        font-size: 0.82rem;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+
+      tr:last-child td {
+        border-bottom: 0;
+      }
+
+      code,
+      .kbd {
+        padding: 2px 6px;
+        border-radius: 6px;
+        background: #eef2f7;
+        color: #243b53;
+        font-family:
+          "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+        font-size: 0.9em;
+      }
+
+      .tone {
+        display: inline-block;
+        min-width: 76px;
+        padding: 4px 8px;
+        border-radius: 999px;
+        color: #ffffff;
+        text-align: center;
+        font-size: 0.78rem;
+        font-weight: 800;
+      }
+
+      .tone.success {
+        background: var(--success);
+      }
+
+      .tone.warning {
+        background: var(--warning);
+      }
+
+      .tone.critical {
+        background: var(--critical);
+      }
+
+      .tone.neutral {
+        background: var(--neutral);
+      }
+
+      details {
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: #ffffff;
+        margin: 10px 0;
+      }
+
+      summary {
+        cursor: pointer;
+        padding: 14px 16px;
+        font-weight: 800;
+      }
+
+      details > div {
+        padding: 0 16px 16px;
+        color: var(--muted);
+      }
+
+      .callout {
+        padding: 16px;
+        border-left: 5px solid var(--brand-2);
+        border-radius: 12px;
+        background: #eef6ff;
+      }
+
+      .callout.warning {
+        border-left-color: var(--warning);
+        background: #fff7ed;
+      }
+
+      .footer {
+        margin: 36px 0 12px;
+        color: var(--muted);
+        text-align: center;
+      }
+
+      @media (max-width: 980px) {
+        .layout {
+          grid-template-columns: 1fr;
+        }
+
+        .sidebar {
+          position: relative;
+          height: auto;
+        }
+
+        .content {
+          padding: 18px;
+        }
+
+        .grid.two,
+        .grid.three,
+        .grid.four {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="layout">
+      <aside class="sidebar">
+        <h1>Wealth AI Studio</h1>
+        <p class="subtitle">
+          User guide for personas, widgets, workflows, and demo data.
+        </p>
+        <nav aria-label="Guide navigation">
+          <a href="#overview">Overview</a>
+          <a href="#quick-start">Quick start</a>
+          <a href="#navigation">Navigation map</a>
+          <a href="#personas">Persona home pages</a>
+          <a href="#widgets">Widget guide</a>
+          <a href="#demo-data">Demo data</a>
+          <a href="#use-cases">40 use-case map</a>
+          <a href="#demo-story">Demo story</a>
+          <a href="#daily-usage">Daily usage plays</a>
+          <a href="#troubleshooting">Troubleshooting</a>
+        </nav>
+      </aside>
+
+      <main class="content">
+        <header class="hero" id="overview">
+          <h2>Wealth AI Studio User Guide</h2>
+          <p>
+            Wealth AI Studio is a Salesforce workspace for advisors, portfolio
+            teams, compliance, operations, distribution, service, and
+            executives. It turns AI recommendations, insights, risk signals,
+            workflows, and autonomous agent runs into role-specific actions.
+          </p>
+          <div class="meta">
+            <span class="badge">Org: wm-studio-org</span>
+            <span class="badge">App: Wealth AI Studio</span>
+            <span class="badge">Guide date: 2026-07-02</span>
+            <span class="badge">Coverage: UC-1 to UC-40</span>
+          </div>
+        </header>
+
+        <section class="card" id="quick-start">
+          <h2>Quick start</h2>
+          <div class="grid two">
+            <div>
+              <div class="step">
+                <span class="step-number">1</span>
+                <div>
+                  <strong>Open Salesforce App Launcher.</strong>
+                  Search for <span class="kbd">Wealth AI Studio</span> and open
+                  the app.
+                </div>
+              </div>
+              <div class="step">
+                <span class="step-number">2</span>
+                <div>
+                  <strong>Choose a persona page.</strong>
+                  Use <span class="kbd">Advisor Home</span>,
+                  <span class="kbd">Compliance Home</span>, or
+                  <span class="kbd">Executive Home</span> from the app
+                  navigation.
+                </div>
+              </div>
+              <div class="step">
+                <span class="step-number">3</span>
+                <div>
+                  <strong>Select a client or household.</strong>
+                  Most action widgets include a Client / Household dropdown. For
+                  demos, select
+                  <span class="kbd">Sharma Family Office</span> first.
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="step">
+                <span class="step-number">4</span>
+                <div>
+                  <strong>Run an AI action.</strong>
+                  Click an action button such as
+                  <span class="kbd">Run Proposal Copilot</span> or
+                  <span class="kbd">Run Portfolio Monitoring</span>.
+                </div>
+              </div>
+              <div class="step">
+                <span class="step-number">5</span>
+                <div>
+                  <strong>Review the result.</strong>
+                  The widget refreshes, shows a success toast, updates KPI
+                  tiles, and adds a queue item.
+                </div>
+              </div>
+              <div class="step">
+                <span class="step-number">6</span>
+                <div>
+                  <strong>Audit the run.</strong>
+                  Open <span class="kbd">AI Agent Runs</span>,
+                  <span class="kbd">AI Recommendations</span>, or
+                  <span class="kbd">AI Insights</span> to inspect records.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="callout">
+            <strong>Best demo account:</strong> Start with
+            <span class="kbd">Sharma Family Office</span>. It contains UC-1 to
+            UC-40 tagged agent runs and rich demo artifacts across all widgets.
+          </div>
+        </section>
+
+        <section class="card" id="navigation">
+          <h2>Navigation map</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Tab or page</th>
+                <th>Purpose</th>
+                <th>Best for</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Home</strong></td>
+                <td>Combined role-aware landing page with all key widgets.</td>
+                <td>General overview and cross-persona demos.</td>
+              </tr>
+              <tr>
+                <td><strong>Advisor Home</strong></td>
+                <td>
+                  Advisor cockpit, client action center, and growth command
+                  center.
+                </td>
+                <td>Advisor daily workflow and client prep.</td>
+              </tr>
+              <tr>
+                <td><strong>Compliance Home</strong></td>
+                <td>
+                  Compliance metrics, ops/compliance workbench, autonomy
+                  oversight.
+                </td>
+                <td>Risk triage, findings, surveillance, HITL review.</td>
+              </tr>
+              <tr>
+                <td><strong>Executive Home</strong></td>
+                <td>
+                  Executive KPI pulse plus growth and autonomy command centers.
+                </td>
+                <td>Pipeline, adoption, firm-level health, escalations.</td>
+              </tr>
+              <tr>
+                <td><strong>Object tabs</strong></td>
+                <td>
+                  Direct record access for recommendations, insights, alerts,
+                  findings, workflows, and runs.
+                </td>
+                <td>Audit, drill-down, list views, and admin review.</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="card" id="personas">
+          <h2>Persona home pages</h2>
+          <div class="grid three">
+            <article class="mini-card">
+              <h3>Advisor Home</h3>
+              <p>
+                Use this page to identify priority clients, prepare meetings,
+                refresh scores, generate next best actions, and launch growth
+                plays.
+              </p>
+              <ul>
+                <li>Advisor Cockpit metrics</li>
+                <li>Top Recommendations and Latest Insights</li>
+                <li>Advisor Action Center</li>
+                <li>Growth Service Command Center</li>
+              </ul>
+            </article>
+            <article class="mini-card">
+              <h3>Compliance Home</h3>
+              <p>
+                Use this page to monitor open findings, triage escalations, run
+                surveillance, and review autonomous activity requiring
+                supervision.
+              </p>
+              <ul>
+                <li>Compliance Command Center</li>
+                <li>Ops Compliance Workbench</li>
+                <li>Autonomy Control Tower</li>
+                <li>Findings and risk signals</li>
+              </ul>
+            </article>
+            <article class="mini-card">
+              <h3>Executive Home</h3>
+              <p>
+                Use this page to review AI pipeline value, successful agent
+                runs, average client health, compliance exposure, and autonomous
+                scale.
+              </p>
+              <ul>
+                <li>Executive Pulse</li>
+                <li>Growth Service Command Center</li>
+                <li>Autonomy Control Tower</li>
+                <li>Firm-level adoption story</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
+        <section class="card" id="widgets">
+          <h2>Widget guide</h2>
+
+          <details open>
+            <summary>Advisor Cockpit</summary>
+            <div>
+              <p>
+                Shows high-priority recommendations, new insights, briefings
+                generated today, and at-risk clients. Use it to begin an advisor
+                day and decide which clients need attention.
+              </p>
+              <p>
+                <strong>Records used:</strong> AI Recommendations, AI Insights,
+                Advisor Briefings, Client Health Scores.
+              </p>
+            </div>
+          </details>
+
+          <details>
+            <summary>Advisor Action Center</summary>
+            <div>
+              <p>
+                Select an account and run briefing, relationship intelligence,
+                next best action, and score refresh actions. The widget creates
+                briefings, insights, recommendations, and updated scores.
+              </p>
+              <p>
+                <strong>Use cases:</strong> UC-1, UC-4, UC-5, UC-10, UC-11,
+                UC-12, UC-22, UC-23.
+              </p>
+            </div>
+          </details>
+
+          <details>
+            <summary>Portfolio Copilot Panel</summary>
+            <div>
+              <p>
+                Runs portfolio health, review, commentary, and risk exposure
+                detection. Watch alert and signal lists update after each
+                action.
+              </p>
+              <p><strong>Use cases:</strong> UC-6, UC-7, UC-8, UC-9.</p>
+            </div>
+          </details>
+
+          <details>
+            <summary>Ops Compliance Workbench</summary>
+            <div>
+              <p>
+                Combines distribution, compliance, and operations actions. It
+                creates referral predictions, compliance findings, and workflow
+                executions.
+              </p>
+              <p><strong>Use cases:</strong> UC-13 to UC-21.</p>
+            </div>
+          </details>
+
+          <details>
+            <summary>Growth Service Command Center</summary>
+            <div>
+              <p>
+                Launches scale use cases such as proposal copilot, referral
+                intelligence, cross-sell, scenario analysis, service resolution,
+                attrition, surveillance, reconciliation, and cash movement
+                intelligence.
+              </p>
+              <p>
+                <strong>Example:</strong> Select
+                <span class="kbd">Rao Global Family Trust</span> and click
+                <span class="kbd">Run Proposal Copilot</span>. The system
+                creates a successful Advisor agent run plus a new Proposal
+                recommendation. If the latest health score is below 65, priority
+                is High.
+              </p>
+              <p><strong>Use cases:</strong> UC-24 to UC-32.</p>
+            </div>
+          </details>
+
+          <details>
+            <summary>Autonomy Control Tower</summary>
+            <div>
+              <p>
+                Runs autonomous advisor, service, operations, compliance,
+                prospecting, branch manager, portfolio monitoring, and
+                personalized engagement cycles. It shows pending approvals,
+                escalations, autonomous run count, and active workflows.
+              </p>
+              <p>
+                <strong>HITL logic:</strong> Advisor, compliance, prospecting,
+                and personalized engagement cycles can create pending approval
+                items.
+              </p>
+              <p><strong>Use cases:</strong> UC-33 to UC-40.</p>
+            </div>
+          </details>
+        </section>
+
+        <section class="card" id="demo-data">
+          <h2>Demo data</h2>
+          <p>
+            Demo data has been seeded for 10 accounts. The primary account
+            contains the complete UC-1 to UC-40 storyline. The other accounts
+            support dropdowns, dashboards, list views, and cross-persona demos.
+          </p>
+          <div class="grid two">
+            <div class="mini-card">
+              <h3>Primary demo account</h3>
+              <p>
+                <span class="kbd">Sharma Family Office</span> contains all 40
+                use-case tagged runs, recommendations, insights, findings,
+                workflows, alerts, signals, and autonomous approval states.
+              </p>
+            </div>
+            <div class="mini-card">
+              <h3>Seed script</h3>
+              <p>
+                The seed script lives at
+                <code
+                  >WAM-Studio-SF-Build/scripts/apex/seed_10_accounts_uc1_uc40.apex</code
+                >.
+              </p>
+            </div>
+          </div>
+          <h3>Seeded accounts</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Account</th>
+                <th>Demo purpose</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td>Sharma Family Office</td>
+                <td>Full UC-1 to UC-40 storyline and all widget queues.</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>Patel Legacy Partners</td>
+                <td>Advisor and growth queue comparison.</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td>Rao Global Family Trust</td>
+                <td>Proposal copilot and health-driven prioritization demo.</td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td>Singh Multigenerational Wealth</td>
+                <td>Compliance and portfolio risk comparison.</td>
+              </tr>
+              <tr>
+                <td>5</td>
+                <td>Mehta Strategic Holdings</td>
+                <td>Operations and workflow queue comparison.</td>
+              </tr>
+              <tr>
+                <td>6</td>
+                <td>Kapoor Capital Advisory</td>
+                <td>Service and recommendation list variety.</td>
+              </tr>
+              <tr>
+                <td>7</td>
+                <td>Iyer Horizon Family Desk</td>
+                <td>Risk and cash movement scenarios.</td>
+              </tr>
+              <tr>
+                <td>8</td>
+                <td>Verma Private Wealth</td>
+                <td>Referral and distribution scenarios.</td>
+              </tr>
+              <tr>
+                <td>9</td>
+                <td>Nair Evergreen Portfolio</td>
+                <td>Portfolio alerts and signal scenarios.</td>
+              </tr>
+              <tr>
+                <td>10</td>
+                <td>Desai Premier Advisory</td>
+                <td>Executive metrics and portfolio comparison.</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="card" id="use-cases">
+          <h2>40 use-case map</h2>
+          <p>
+            Use this table to explain which widget demonstrates each use case.
+          </p>
+          <table>
+            <thead>
+              <tr>
+                <th>Range</th>
+                <th>Use cases</th>
+                <th>Primary widget</th>
+                <th>Primary persona</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>UC-1 to UC-5</td>
+                <td>
+                  Advisor briefing, meeting prep, follow-up, relationship
+                  intelligence, NBA.
+                </td>
+                <td>Advisor Cockpit, Advisor Action Center</td>
+                <td>Advisor</td>
+              </tr>
+              <tr>
+                <td>UC-6 to UC-9</td>
+                <td>Portfolio health, review, commentary, risk exposure.</td>
+                <td>Portfolio Copilot Panel</td>
+                <td>Portfolio, Advisor</td>
+              </tr>
+              <tr>
+                <td>UC-10 to UC-12</td>
+                <td>Client 360, engagement scoring, client health score.</td>
+                <td>Advisor Action Center</td>
+                <td>Advisor, Executive</td>
+              </tr>
+              <tr>
+                <td>UC-13 to UC-21</td>
+                <td>Lead scoring through workflow automation.</td>
+                <td>Ops Compliance Workbench</td>
+                <td>Distribution, Compliance, Operations</td>
+              </tr>
+              <tr>
+                <td>UC-22 to UC-23</td>
+                <td>
+                  Advisor productivity and revenue intelligence dashboards.
+                </td>
+                <td>Advisor Cockpit, Executive Pulse</td>
+                <td>Advisor, Executive</td>
+              </tr>
+              <tr>
+                <td>UC-24 to UC-32</td>
+                <td>
+                  Proposal, referral, cross-sell, scenario, service, attrition,
+                  surveillance, reconciliation, cash movement.
+                </td>
+                <td>Growth Service Command Center</td>
+                <td>Advisor, Service, Compliance, Operations, Executive</td>
+              </tr>
+              <tr>
+                <td>UC-33 to UC-40</td>
+                <td>
+                  Autonomous advisor, service, ops, compliance, prospecting,
+                  branch manager, portfolio monitoring, personalization.
+                </td>
+                <td>Autonomy Control Tower</td>
+                <td>All personas with human-in-the-loop oversight</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="card" id="demo-story">
+          <h2>End-to-end demo story</h2>
+          <div class="step">
+            <span class="step-number">1</span>
+            <div>
+              <strong>Executive opens the conversation.</strong>
+              Start on <span class="kbd">Executive Home</span>. Explain pipeline
+              value, agent run success, average client health, and compliance
+              exposure.
+            </div>
+          </div>
+          <div class="step">
+            <span class="step-number">2</span>
+            <div>
+              <strong>Advisor acts on the priority household.</strong>
+              Go to <span class="kbd">Advisor Home</span>, select
+              <span class="kbd">Sharma Family Office</span>, and show
+              recommendations, insights, briefing, score refresh, and growth
+              actions.
+            </div>
+          </div>
+          <div class="step">
+            <span class="step-number">3</span>
+            <div>
+              <strong>Portfolio team explains risk.</strong>
+              Use Portfolio Copilot to generate health analysis, commentary, and
+              risk exposure signals.
+            </div>
+          </div>
+          <div class="step">
+            <span class="step-number">4</span>
+            <div>
+              <strong>Compliance and operations resolve work.</strong>
+              Open <span class="kbd">Compliance Home</span>. Use Ops Compliance
+              Workbench to show KYC, AML, regulatory monitoring, onboarding,
+              document, and workflow execution.
+            </div>
+          </div>
+          <div class="step">
+            <span class="step-number">5</span>
+            <div>
+              <strong>Scale growth and service.</strong>
+              In Growth Service Command Center, run proposal copilot,
+              cross-sell, service resolution, attrition, surveillance,
+              reconciliation, and cash movement scenarios.
+            </div>
+          </div>
+          <div class="step">
+            <span class="step-number">6</span>
+            <div>
+              <strong>Finish with autonomy and guardrails.</strong>
+              In Autonomy Control Tower, show autonomous runs, pending HITL
+              approvals, escalations, and workflow execution. Explain that
+              autonomy is supervised, auditable, and role-aware.
+            </div>
+          </div>
+        </section>
+
+        <section class="card" id="daily-usage">
+          <h2>Daily usage plays</h2>
+          <div class="grid two">
+            <article class="mini-card">
+              <h3>Advisor morning routine</h3>
+              <ol>
+                <li>Open Advisor Home.</li>
+                <li>
+                  Review high-priority recommendations and at-risk clients.
+                </li>
+                <li>Select the highest priority account.</li>
+                <li>Generate briefing and next best action.</li>
+                <li>Run proposal or cross-sell action if relevant.</li>
+              </ol>
+            </article>
+            <article class="mini-card">
+              <h3>Compliance review routine</h3>
+              <ol>
+                <li>Open Compliance Home.</li>
+                <li>Review open and escalated findings.</li>
+                <li>Run KYC, AML, or surveillance actions.</li>
+                <li>Check Autonomy Control Tower for pending approvals.</li>
+                <li>Drill into AI Agent Runs for audit details.</li>
+              </ol>
+            </article>
+            <article class="mini-card">
+              <h3>Executive review routine</h3>
+              <ol>
+                <li>Open Executive Home.</li>
+                <li>Review pipeline value and agent adoption.</li>
+                <li>Inspect growth queue and service/control indicators.</li>
+                <li>Open Autonomy Control Tower for escalations.</li>
+                <li>Use object tabs for supporting evidence.</li>
+              </ol>
+            </article>
+            <article class="mini-card">
+              <h3>Operations routine</h3>
+              <ol>
+                <li>
+                  Use Ops Compliance Workbench or Growth Service Command Center.
+                </li>
+                <li>
+                  Run onboarding, document extraction, workflow, reconciliation,
+                  or cash actions.
+                </li>
+                <li>Review Workflow Executions.</li>
+                <li>Escalate failed or running workflows as needed.</li>
+              </ol>
+            </article>
+          </div>
+        </section>
+
+        <section class="card" id="troubleshooting">
+          <h2>Troubleshooting</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Issue</th>
+                <th>What to check</th>
+                <th>Expected fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Persona card is hidden</td>
+                <td>User may not have the related role permission set.</td>
+                <td>
+                  Assign WAM Role - Advisor, WAM Role - Compliance, or WAM Role
+                  - Executive.
+                </td>
+              </tr>
+              <tr>
+                <td>Action button is disabled</td>
+                <td>
+                  No client selected, widget is loading, or record context is
+                  missing.
+                </td>
+                <td>
+                  Select an account from the dropdown and wait for loading to
+                  finish.
+                </td>
+              </tr>
+              <tr>
+                <td>Counts do not change after an action</td>
+                <td>The count may be filtered to a specific status or type.</td>
+                <td>
+                  Open the related queue or object tab to confirm the new
+                  record.
+                </td>
+              </tr>
+              <tr>
+                <td>Pending approvals are visible</td>
+                <td>
+                  Autonomous HITL flows intentionally create pending items.
+                </td>
+                <td>
+                  Open AI Agent Runs and review records with HITL Status =
+                  Pending.
+                </td>
+              </tr>
+              <tr>
+                <td>No demo accounts appear</td>
+                <td>Demo seed data may not have been loaded in the org.</td>
+                <td>
+                  Run the seed script from
+                  <code>scripts/apex/seed_10_accounts_uc1_uc40.apex</code>.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="callout warning">
+            <strong>Note:</strong> This accelerator creates Salesforce records
+            for demo and validation purposes. Review generated records before
+            using the data in a production-style presentation.
+          </div>
+        </section>
+
+        <p class="footer">
+          Wealth AI Studio User Guide. Generated for the WAM Automation Studio
+          project.
+        </p>
+      </main>
+    </div>
+  </body>
+</html>

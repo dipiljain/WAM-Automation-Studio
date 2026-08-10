@@ -26,6 +26,44 @@ private class WealthAIStudioServiceTest {
     }
 
     @isTest
+    static void testGenerateActionableFix() {
+        Account acct = WamTestDataFactory.createHousehold('Fix Test Household');
+
+        Test.startTest();
+        WealthAIStudioService.FixResult result = WealthAIStudioService.generateActionableFix(
+            acct.Id,
+            'Critical risk item',
+            'Health score dropped below policy threshold.'
+        );
+        Test.stopTest();
+
+        System.assertNotEquals(null, result.recordId, 'Fix should create a Workflow Execution record.');
+        Workflow_Execution__c execution = [
+            SELECT Status__c, Account__c, Automation_Template__r.Category__c
+            FROM Workflow_Execution__c
+            WHERE Id = :result.recordId
+        ];
+        System.assertEquals('Queued', execution.Status__c, 'Fix workflow should be queued for execution.');
+        System.assertEquals(acct.Id, execution.Account__c, 'Fix workflow should be linked to the account.');
+        System.assertEquals(
+            'Remediation',
+            execution.Automation_Template__r.Category__c,
+            'Fix workflow should use the remediation template category.'
+        );
+    }
+
+    @isTest
+    static void testGenerateActionableFixRequiresAccount() {
+        Boolean threw = false;
+        try {
+            WealthAIStudioService.generateActionableFix(null, 'Title', 'Detail');
+        } catch (AuraHandledException e) {
+            threw = true;
+        }
+        System.assert(threw, 'Should require an account to generate a fix.');
+    }
+
+    @isTest
     static void testInvocable() {
         WealthAILogAgentRun.Request req = new WealthAILogAgentRun.Request();
         req.agentName = 'Advisor Agent';

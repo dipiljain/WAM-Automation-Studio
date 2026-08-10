@@ -1,13 +1,18 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <GenAiPromptTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
-    <activeVersionIdentifier>WAM_Meeting_Prep_Briefing_v1</activeVersionIdentifier>
-    <description>Salesforce Wealth AI Studio: generates a concise, grounded meeting-preparation briefing and agenda for a wealth advisor based on the selected client/household.</description>
+    <activeVersionIdentifier
+  >WCJ/FmQRF+skckAA8tjI4zCPwUgc1XYeOUcN8XkXOE4=_1</activeVersionIdentifier>
+    <description
+  >Salesforce Wealth AI Studio: generates a concise, grounded meeting-preparation briefing and agenda for a wealth advisor based on the selected client/household.</description>
     <developerName>Meeting_Prep_Briefing</developerName>
     <masterLabel>Meeting Prep Briefing</masterLabel>
     <templateVersions>
-        <content>You are a meeting-preparation assistant for a wealth advisor at a Wealth &amp; Asset Management firm.
+        <content
+    >You are a meeting-preparation assistant for a wealth advisor at a Wealth &amp; Asset Management firm.
 
-Using ONLY the grounded client context provided, produce a meeting briefing for the advisor&apos;s upcoming meeting with &quot;{!$Input:Client_Name}&quot;.
+Grounded client context (the ONLY facts you may use): {!$Apex:WealthAIClient360DataProvider.Prompt}
+
+Using ONLY the grounded client context above, produce a meeting briefing for the advisor&apos;s upcoming meeting with &quot;{!$Input:Client_Name}&quot;. If the grounded context says no matching client was found, ask the advisor to confirm the client name instead of producing a briefing.
 
 Structure your response with these sections:
 1. Snapshot: household, total AUM, primary goals, risk profile.
@@ -30,7 +35,18 @@ Rules:
         </inputs>
         <primaryModel>sfdc_ai__DefaultOpenAIGPT4OmniMini</primaryModel>
         <status>Published</status>
-        <versionIdentifier>WAM_Meeting_Prep_Briefing_v1</versionIdentifier>
+        <templateDataProviders>
+            <definition>apex://WealthAIClient360DataProvider</definition>
+            <parameters>
+                <definition>primitive://String</definition>
+                <isRequired>true</isRequired>
+                <parameterName>Client_Name</parameterName>
+                <valueExpression>{!$Input:Client_Name}</valueExpression>
+            </parameters>
+            <referenceName>Apex:WealthAIClient360DataProvider</referenceName>
+        </templateDataProviders>
+        <versionIdentifier
+    >WCJ/FmQRF+skckAA8tjI4zCPwUgc1XYeOUcN8XkXOE4=_1</versionIdentifier>
     </templateVersions>
     <type>einstein_gpt__flex</type>
     <visibility>Global</visibility>

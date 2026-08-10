@@ -1,0 +1,48 @@
+<template>
+  <a
+    if:true={isClickable}
+    class={tileClass}
+    href={recordUrl}
+    target="_blank"
+    title={label}
+  >
+    <div class="value-row">
+      <p class="slds-truncate value" title={value}>{value}</p>
+      <lightning-icon
+        icon-name={toneIconName}
+        variant={toneVariant}
+        size="xx-small"
+        class="tone-icon"
+        alternative-text={toneLabel}
+        title={toneLabel}
+      ></lightning-icon>
+    </div>
+    <p class="slds-truncate label" title={label}>{label}</p>
+    <p if:true={hasContext} class="slds-truncate context" title={context}>
+      {context}
+    </p>
+    <lightning-icon
+      icon-name="utility:chevronright"
+      size="xx-small"
+      class="drill-icon"
+      alternative-text="View records"
+    ></lightning-icon>
+  </a>
+  <article if:false={isClickable} class={tileClass}>
+    <div class="value-row">
+      <p class="slds-truncate value" title={value}>{value}</p>
+      <lightning-icon
+        icon-name={toneIconName}
+        variant={toneVariant}
+        size="xx-small"
+        class="tone-icon"
+        alternative-text={toneLabel}
+        title={toneLabel}
+      ></lightning-icon>
+    </div>
+    <p class="slds-truncate label" title={label}>{label}</p>
+    <p if:true={hasContext} class="slds-truncate context" title={context}>
+      {context}
+    </p>
+  </article>
+</template>

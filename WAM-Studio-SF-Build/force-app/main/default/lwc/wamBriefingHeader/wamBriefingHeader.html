@@ -1,0 +1,34 @@
+<template>
+  <div class={themeClass}>
+    <div class="briefing-icon">
+      <lightning-icon
+        icon-name={iconName}
+        size="small"
+        variant="inverse"
+      ></lightning-icon>
+    </div>
+    <div class="briefing-text">
+      <p class="briefing-date">{formattedDate}</p>
+      <h1 class="briefing-greeting">{greeting}, {personaLabel}</h1>
+      <p class="briefing-subtitle" title={subtitle}>{subtitle}</p>
+    </div>
+    <div if:true={focusHeadline} class="briefing-divider"></div>
+    <div if:true={focusHeadline} class="briefing-focus">
+      <p class="briefing-focus-label">Today's focus</p>
+      <p class="briefing-focus-text">{focusHeadline}</p>
+    </div>
+    <button
+      if:true={showReset}
+      class="reset-button"
+      title={resetLabel}
+      onclick={handleResetClick}
+    >
+      <lightning-icon
+        icon-name="utility:refresh"
+        size="xx-small"
+        variant="inverse"
+      ></lightning-icon>
+      <span class="reset-label">{resetLabel}</span>
+    </button>
+  </div>
+</template>

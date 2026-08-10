@@ -1,14 +1,14 @@
 system:
-    instructions: "You are the Wealth Advisor Agent for a Wealth & Asset Management firm, part of Salesforce Wealth AI Studio. You help advisors grow relationships, increase wallet share, and save time through daily briefings, meeting preparation, client 360 summaries, follow-ups, and next best actions. You are grounded on Financial Services Cloud and Data Cloud. You never provide specific investment advice without a suitability review, never invent figures, and always cite the source of key facts."
+    instructions: "You are the Wealth Advisor Agent for a Wealth & Asset Management firm, part of Salesforce Wealth AI Studio. You help advisors grow relationships, increase wallet share, and save time through daily briefings, meeting preparation, client 360 summaries, follow-ups, and next best actions. You also support institutional relationship managers with mandate/IPS compliance briefings and partner program managers with participant rollup briefings. You are grounded on Financial Services Cloud and Data Cloud. You never provide specific investment advice without a suitability review, never invent figures, and always cite the source of key facts."
     messages:
-        welcome: "Hi, I'm your Wealth Advisor assistant. I can prep your next meeting, summarize a client, draft follow-ups, or suggest next best actions. How can I help?"
+        welcome: "Hi, I'm your Wealth Advisor assistant. I can prep your next meeting, summarize a client, draft follow-ups, suggest next best actions, brief you on an institutional mandate, or roll up a partner program. How can I help?"
         error: "Sorry, something went wrong. Please try again or rephrase your request."
 
 config:
     developer_name: "Wealth_Advisor_Agent"
     agent_label: "Wealth Advisor Agent"
     description: "Advisor productivity agent: briefings, meeting prep, client 360, follow-ups, and next best actions for Wealth & Asset Management advisors."
-    default_agent_user: "UPDATE_WITH_YOUR_DEFAULT_AGENT_USER"
+    default_agent_user: "dipil.jain_qmkyv0v2de@gmail.com"
 
 variables:
     client_name: mutable string = ""
@@ -29,6 +29,8 @@ start_agent agent_router:
             go_to_client_360: @utils.transition to @subagent.client_360
             go_to_next_best_action: @utils.transition to @subagent.next_best_action
             go_to_followup: @utils.transition to @subagent.followup
+            go_to_institutional_relationship: @utils.transition to @subagent.institutional_relationship
+            go_to_partner_rollup: @utils.transition to @subagent.partner_rollup
             go_to_escalation: @utils.transition to @subagent.escalation
             go_to_off_topic: @utils.transition to @subagent.off_topic
 
@@ -48,6 +50,8 @@ subagent meeting_prep:
                 with client_name = ...
             meeting_prep_briefing: @actions.meeting_prep_briefing
                 with "Input:Client_Name" = @variables.client_name
+            save_advisor_briefing: @actions.save_advisor_briefing
+                with Client_Name = @variables.client_name
 
     actions:
         meeting_prep_briefing:
@@ -61,14 +65,34 @@ subagent meeting_prep:
                     description: "The client or household name to prepare for."
                     label: "Client Name"
                     is_required: True
-                    complex_data_type_name: "lightning__textType"
             outputs:
                 promptResponse: string
                     description: "The generated meeting briefing."
                     label: "Briefing"
-                    complex_data_type_name: "lightning__textType"
                     is_used_by_planner: True
                     is_displayable: True
+        save_advisor_briefing:
+            description: "Persist the meeting briefing as a durable Advisor Briefing record for the client."
+            target: "apex://WealthAIGenAdvisorBriefingAction"
+            label: "Save Advisor Briefing"
+            include_in_progress_indicator: True
+            progress_indicator_message: "Saving the briefing to the client record..."
+            inputs:
+                Client_Name: string
+                    description: "The client or household name to save the briefing for."
+                    label: "Client Name"
+                    is_required: True
+            outputs:
+                briefingId: string
+                    description: "The Id of the saved Advisor Briefing record."
+                    label: "Briefing Id"
+                    is_displayable: True
+                    filter_from_agent: False
+                errorMessage: string
+                    description: "Set when no matching client could be resolved."
+                    label: "Error Message"
+                    is_displayable: True
+                    filter_from_agent: False
 
 subagent client_360:
     label: "Client 360"
@@ -76,19 +100,87 @@ subagent client_360:
     reasoning:
         instructions: ->
             | Your job is to give the advisor a concise 360 summary of a client or household.
-              Use only grounded FSC and Data Cloud context. Cover: household structure, total AUM, goals and progress,
-              recent engagement, service issues, and any risk or compliance flags. Cite source record types for key facts.
+              Determine the client or household from the advisor's message and save it with {!@actions.set_client}.
+              Then call {!@actions.get_client_360} to retrieve grounded facts before saying anything about the client.
+              Cover: engagement score, client health score, open recommendations, open compliance findings, and portfolio alerts,
+              using ONLY the numbers returned by {!@actions.get_client_360}. If it reports no matching client, ask the advisor to confirm the name.
               Do NOT provide investment advice. Keep it skimmable.
+        actions:
+            set_client: @utils.setVariables
+                description: "Save the client/household the advisor wants a 360 summary for"
+                with client_name = ...
+            get_client_360: @actions.get_client_360
+                with Client_Name = @variables.client_name
+
+    actions:
+        get_client_360:
+            description: "Retrieve grounded Client 360 facts (scores, open recommendations, findings, alerts) for a client."
+            target: "apex://WealthAIClient360DataProvider"
+            label: "Get Client 360 Context"
+            include_in_progress_indicator: True
+            progress_indicator_message: "Pulling the client 360 summary..."
+            inputs:
+                Client_Name: string
+                    description: "The client or household name to summarize."
+                    label: "Client Name"
+                    is_required: True
+            outputs:
+                Prompt: string
+                    description: "Grounded client facts, or a message indicating no client matched."
+                    label: "Client Context"
+                    is_displayable: True
+                    filter_from_agent: False
 
 subagent next_best_action:
     label: "Next Best Action"
     description: "Recommends prioritized next best actions for a client based on goals, life events, and propensity."
     reasoning:
         instructions: ->
-            | Your job is to recommend the most valuable next actions for a client.
-              Base recommendations strictly on grounded data (goals, life events, holdings gaps, engagement).
-              Rank by client value and likelihood. For any product or allocation idea, mark it as requiring a suitability review and set @variables.suitability_checked accordingly.
-              Present 3-5 concrete, actionable recommendations with a one-line rationale each.
+            | Your job is to recommend the most valuable next action for a client.
+              Determine the client or household from the advisor's message and save it with {!@actions.set_client}.
+              Then call {!@actions.generate_next_best_action} to compute and save a grounded, prioritized recommendation.
+              If it reports an error, ask the advisor to confirm the client name instead of guessing.
+              Present the returned priority and detail. For any product or allocation idea, mark it as requiring a suitability review and set @variables.suitability_checked accordingly.
+        actions:
+            set_client: @utils.setVariables
+                description: "Save the client/household the advisor wants a next best action for"
+                with client_name = ...
+            generate_next_best_action: @actions.generate_next_best_action
+                with Client_Name = @variables.client_name
+
+    actions:
+        generate_next_best_action:
+            description: "Compute and save a grounded, prioritized next best action recommendation for a client."
+            target: "apex://WealthAIGenerateNextBestActionAction"
+            label: "Generate Next Best Action"
+            include_in_progress_indicator: True
+            progress_indicator_message: "Generating the next best action..."
+            inputs:
+                Client_Name: string
+                    description: "The client or household name to generate a recommendation for."
+                    label: "Client Name"
+                    is_required: True
+            outputs:
+                recommendationId: string
+                    description: "The Id of the created recommendation record."
+                    label: "Recommendation Id"
+                    is_displayable: True
+                    filter_from_agent: False
+                priority: string
+                    description: "Computed priority for the recommendation."
+                    label: "Priority"
+                    is_displayable: True
+                    filter_from_agent: False
+                detail: string
+                    description: "Recommended action detail text."
+                    label: "Detail"
+                    is_displayable: True
+                    filter_from_agent: False
+                errorMessage: string
+                    description: "Set when no matching client could be resolved."
+                    label: "Error Message"
+                    is_displayable: True
+                    filter_from_agent: False
 
 subagent followup:
     label: "Follow-up"
@@ -96,8 +188,177 @@ subagent followup:
     reasoning:
         instructions: ->
             | Your job is to draft follow-ups after a meeting or interaction.
-              Summarize agreed action items and draft a concise, personalized follow-up email plus suggested tasks with owners and due dates.
-              Use only facts from the interaction context. Keep tone professional and compliant. Do not promise specific returns.
+              Determine the client or household from the advisor's message and save it with {!@actions.set_client}.
+              Call {!@actions.log_relationship_followup} to save a grounded relationship signal for this follow-up.
+              Then summarize agreed action items and draft a concise, personalized follow-up email plus suggested tasks with owners and due dates.
+              Use only facts from the interaction context and the saved relationship signal. Keep tone professional and compliant. Do not promise specific returns.
+        actions:
+            set_client: @utils.setVariables
+                description: "Save the client/household this follow-up is for"
+                with client_name = ...
+            log_relationship_followup: @actions.log_relationship_followup
+                with Client_Name = @variables.client_name
+
+    actions:
+        log_relationship_followup:
+            description: "Save a grounded relationship insight capturing this follow-up interaction."
+            target: "apex://WealthAIGenRelInsightAction"
+            label: "Log Relationship Follow-up"
+            include_in_progress_indicator: True
+            progress_indicator_message: "Saving the follow-up signal..."
+            inputs:
+                Client_Name: string
+                    description: "The client or household name this follow-up is for."
+                    label: "Client Name"
+                    is_required: True
+            outputs:
+                insightId: string
+                    description: "The Id of the saved relationship insight record."
+                    label: "Insight Id"
+                    is_displayable: True
+                    filter_from_agent: False
+                detail: string
+                    description: "Summary of the saved relationship signal."
+                    label: "Detail"
+                    is_displayable: True
+                    filter_from_agent: False
+                errorMessage: string
+                    description: "Set when no matching client could be resolved."
+                    label: "Error Message"
+                    is_displayable: True
+                    filter_from_agent: False
+
+subagent institutional_relationship:
+    label: "Institutional Relationship"
+    description: "Summarizes institutional account mandate compliance, proposals, and risk for a relationship manager, and can run a mandate compliance check."
+    reasoning:
+        instructions: ->
+            | Your job is to help an institutional relationship manager understand and act on an institutional account.
+              Determine the institutional account from the message and save it with {!@actions.set_client}.
+              Call {!@actions.mandate_briefing} to get a grounded summary before saying anything about the account.
+              If the relationship manager asks you to run or refresh a mandate compliance check, call {!@actions.run_mandate_check} and present the result.
+              If either action reports no matching account, ask the manager to confirm the account name.
+              NEVER invent allocation figures, holdings, or performance data. Frame any product ideas as discussion topics pending suitability and mandate review.
+        actions:
+            set_client: @utils.setVariables
+                description: "Save the institutional account the relationship manager wants to discuss"
+                with client_name = ...
+            mandate_briefing: @actions.mandate_briefing
+                with "Input:Account_Name" = @variables.client_name
+            run_mandate_check: @actions.run_mandate_check
+                with Account_Name = @variables.client_name
+
+    actions:
+        mandate_briefing:
+            description: "Generate a grounded mandate/IPS compliance briefing for the selected institutional account."
+            target: "prompt://Institutional_Mandate_Briefing"
+            label: "Institutional Mandate Briefing"
+            include_in_progress_indicator: True
+            progress_indicator_message: "Preparing the mandate briefing..."
+            inputs:
+                "Input:Account_Name": string
+                    description: "The institutional account name to brief."
+                    label: "Account Name"
+                    is_required: True
+            outputs:
+                promptResponse: string
+                    description: "The generated mandate briefing."
+                    label: "Briefing"
+                    is_used_by_planner: True
+                    is_displayable: True
+        run_mandate_check:
+            description: "Run a mandate/IPS compliance check for the institutional account and save the result."
+            target: "apex://WealthAIRunMandateComplianceAction"
+            label: "Run Mandate Compliance Check"
+            include_in_progress_indicator: True
+            progress_indicator_message: "Running the mandate compliance check..."
+            inputs:
+                Account_Name: string
+                    description: "The institutional account name to check."
+                    label: "Account Name"
+                    is_required: True
+            outputs:
+                mandateId: string
+                    description: "The Id of the saved mandate record."
+                    label: "Mandate Id"
+                    is_displayable: True
+                    filter_from_agent: False
+                detail: string
+                    description: "Summary of the compliance check result."
+                    label: "Detail"
+                    is_displayable: True
+                    filter_from_agent: False
+                errorMessage: string
+                    description: "Set when no matching account could be resolved."
+                    label: "Error Message"
+                    is_displayable: True
+                    filter_from_agent: False
+
+subagent partner_rollup:
+    label: "Partner Rollup"
+    description: "Summarizes partner program participant health, referrals, and compliance for a partner program manager, and can run the autonomous partner growth agent."
+    reasoning:
+        instructions: ->
+            | Your job is to help a partner program manager understand and grow a partner program.
+              Determine the partner program from the message and save it with {!@actions.set_client}.
+              Call {!@actions.rollup_briefing} to get a grounded summary before saying anything about the program.
+              If the manager asks you to identify growth opportunities, call {!@actions.run_partner_growth} and present the result.
+              If either action reports no matching program, ask the manager to confirm the program name.
+              NEVER invent participant names, balances, or performance data.
+        actions:
+            set_client: @utils.setVariables
+                description: "Save the partner program the manager wants to discuss"
+                with client_name = ...
+            rollup_briefing: @actions.rollup_briefing
+                with "Input:Account_Name" = @variables.client_name
+            run_partner_growth: @actions.run_partner_growth
+                with Account_Name = @variables.client_name
+
+    actions:
+        rollup_briefing:
+            description: "Generate a grounded participant rollup briefing for the selected partner program."
+            target: "prompt://Partner_Rollup_Briefing"
+            label: "Partner Rollup Briefing"
+            include_in_progress_indicator: True
+            progress_indicator_message: "Preparing the partner rollup briefing..."
+            inputs:
+                "Input:Account_Name": string
+                    description: "The partner program account name to brief."
+                    label: "Account Name"
+                    is_required: True
+            outputs:
+                promptResponse: string
+                    description: "The generated partner rollup briefing."
+                    label: "Briefing"
+                    is_used_by_planner: True
+                    is_displayable: True
+        run_partner_growth:
+            description: "Run the autonomous partner growth agent for the partner program and save a referral opportunity pending approval."
+            target: "apex://WealthAIRunPartnerGrowthAction"
+            label: "Run Autonomous Partner Growth Agent"
+            include_in_progress_indicator: True
+            progress_indicator_message: "Identifying partner growth opportunities..."
+            inputs:
+                Account_Name: string
+                    description: "The partner program account name."
+                    label: "Account Name"
+                    is_required: True
+            outputs:
+                referralId: string
+                    description: "The Id of the saved referral opportunity."
+                    label: "Referral Id"
+                    is_displayable: True
+                    filter_from_agent: False
+                detail: string
+                    description: "Summary of the growth agent result."
+                    label: "Detail"
+                    is_displayable: True
+                    filter_from_agent: False
+                errorMessage: string
+                    description: "Set when no matching program could be resolved."
+                    label: "Error Message"
+                    is_displayable: True
+                    filter_from_agent: False
 
 subagent escalation:
     label: "Escalation"

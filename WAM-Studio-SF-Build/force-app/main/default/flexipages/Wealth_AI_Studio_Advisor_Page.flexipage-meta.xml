@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<FlexiPage xmlns="http://soap.sforce.com/2006/04/metadata">
+    <flexiPageRegions>
+        <name>main</name>
+        <type>Region</type>
+        <itemInstances>
+            <componentInstance>
+                <componentName>c:advisorHomeCard</componentName>
+                <identifier>wamAdvisorPageCard</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentName>flexipage:richText</componentName>
+                <identifier>wamAdvisorPageWorkflowTip</identifier>
+                <componentInstanceProperties>
+                    <name>richTextValue</name>
+                    <value
+          >&lt;div class="slds-box slds-theme_shade slds-text-body_small"&gt;&lt;strong&gt;Recommended workflow:&lt;/strong&gt; Select a client below, then work through &lt;strong&gt;1. Growth Intelligence → 2. Service and Retention → 3. Operations Controls&lt;/strong&gt; in the accordion.&lt;/div&gt;</value>
+                </componentInstanceProperties>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentName>c:wamClientSelector</componentName>
+                <identifier>wamAdvisorPageClientSelector</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentName>c:advisorActionCenter</componentName>
+                <identifier>wamAdvisorPageActionCenter</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentName>c:growthServiceCommandCenter</componentName>
+                <identifier>wamAdvisorPageGrowthCenter</identifier>
+            </componentInstance>
+        </itemInstances>
+    </flexiPageRegions>
+    <masterLabel>Wealth AI Studio Advisor Page</masterLabel>
+    <template>
+        <name>flexipage:defaultAppHomeTemplate</name>
+    </template>
+    <type>AppPage</type>
+</FlexiPage>

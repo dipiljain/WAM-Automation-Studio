@@ -1,0 +1,38 @@
+<template>
+  <template if:true={showCard}>
+    <c-wam-briefing-header
+      persona-label="Relationship Manager"
+      subtitle="Monitor mandate compliance, proposals, and risk across your institutional book."
+      icon-name="utility:moneybag"
+      theme="institutional"
+      focus-headline={focusHeadline}
+      show-reset="true"
+      reset-label="Reset dashboard"
+      onreset={handleReset}
+    ></c-wam-briefing-header>
+
+    <div class="slds-grid slds-wrap slds-gutters_small">
+      <div class="slds-col slds-size_1-of-1">
+        <c-wam-metric-tiles
+          title="Institutional Book Snapshot"
+          icon-name="standard:account"
+          subtitle="All institutional relationships at a glance."
+          tiles={metricTiles}
+          loading={metricsLoading}
+          error-message={metricError}
+        ></c-wam-metric-tiles>
+      </div>
+
+      <div class="slds-col slds-size_1-of-1">
+        <c-wam-insight-list
+          title="Needs Committee Attention"
+          icon-name="utility:warning"
+          items={priorityItems}
+          loading={priorityLoading}
+          error-message={priorityError}
+          empty-message="No mandate breaches across your institutional book."
+        ></c-wam-insight-list>
+      </div>
+    </div>
+  </template>
+</template>

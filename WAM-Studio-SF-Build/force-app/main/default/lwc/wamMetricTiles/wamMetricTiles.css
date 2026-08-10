@@ -1,0 +1,4 @@
+.subtitle {
+  color: var(--slds-g-color-neutral-base-50, #444444);
+  font-size: 0.8125rem;
+}

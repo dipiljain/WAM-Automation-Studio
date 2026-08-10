@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Wealth AI Studio — Advisor Home (Redesign, Round 2 / Approved)</title>
+<style>
+  :root{
+    --brand-1:#0b5cab; --brand-2:#014486;
+    --success:#2e844a; --warning:#dd7a01; --critical:#ba0517; --neutral:#0176d3;
+    --ink-90:#181818; --ink-60:#444444; --ink-40:#706e6b;
+    --border:#dddbda; --surface:#ffffff; --bg:#f3f2f2;
+    --radius:0.5rem;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--bg); color:var(--ink-90);
+    font-family:"Salesforce Sans", Arial, Helvetica, sans-serif;
+    font-size:14px;
+  }
+  .page{ max-width:1280px; margin:0 auto; padding:1rem 1.25rem 2rem; }
+
+  /* Meta label for annotation purposes only (not part of the design) */
+  .annot{
+    font-size:0.7rem; color:#fff; background:#5c2d91; border-radius:0.25rem;
+    padding:0.05rem 0.4rem; font-weight:700; letter-spacing:.02em;
+    position:absolute; top:-0.55rem; left:0.75rem;
+  }
+  .region{ position:relative; margin-bottom:0.75rem; }
+
+  /* ---------- 1. Compact header ---------- */
+  .header{
+    display:flex; align-items:center; gap:0.75rem;
+    padding:0.6rem 1rem; border-radius:0.625rem;
+    background:linear-gradient(135deg, var(--brand-1) 0%, var(--brand-2) 100%);
+    color:#fff; box-shadow:0 2px 6px rgba(0,0,0,.15);
+  }
+  .header-icon{
+    flex:0 0 auto; width:2.1rem; height:2.1rem; border-radius:50%;
+    background:rgba(255,255,255,.18); display:flex; align-items:center; justify-content:center;
+    font-size:1rem;
+  }
+  .header-main{ flex:0 1 auto; min-width:0; display:flex; align-items:baseline; gap:0.6rem; flex-wrap:wrap; }
+  .header-greeting{ margin:0; font-size:1.05rem; font-weight:700; white-space:nowrap; }
+  .header-date{ font-size:0.7rem; opacity:.85; text-transform:uppercase; letter-spacing:.03em; white-space:nowrap; }
+  .header-subtitle{ margin:0; font-size:0.75rem; opacity:.9; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:26rem; }
+  .header-divider{ width:1px; height:1.6rem; background:rgba(255,255,255,.3); flex:0 0 auto; }
+  .header-focus{ display:flex; align-items:center; gap:0.4rem; flex:0 0 auto; white-space:nowrap; }
+  .header-focus-label{ font-size:0.65rem; font-weight:700; text-transform:uppercase; letter-spacing:.03em; opacity:.85; }
+  .header-focus-text{ font-size:0.78rem; font-weight:600; }
+
+  /* ---------- 2. KPI strip ---------- */
+  .kpi-strip{ display:grid; grid-template-columns:repeat(4,1fr); gap:0.6rem; }
+  .kpi-tile{
+    position:relative; background:var(--surface); border-radius:var(--radius);
+    border:1px solid var(--border); padding:0.55rem 0.75rem 0.5rem;
+    display:flex; flex-direction:column; gap:0.1rem;
+  }
+  .kpi-tile.tone-warning{ border-left:4px solid var(--warning); }
+  .kpi-tile.tone-neutral{ border-left:4px solid var(--neutral); }
+  .kpi-tile.tone-critical{ border-left:4px solid var(--critical); }
+  .kpi-tile.tone-success{ border-left:4px solid var(--success); }
+  .kpi-value-row{ display:flex; align-items:center; gap:0.35rem; }
+  .kpi-value{ font-size:1.9rem; font-weight:800; line-height:1; }
+  .kpi-icon{ font-size:0.95rem; }
+  .tone-warning .kpi-value, .tone-warning .kpi-icon{ color:var(--warning); }
+  .tone-neutral .kpi-value, .tone-neutral .kpi-icon{ color:var(--neutral); }
+  .tone-critical .kpi-value, .tone-critical .kpi-icon{ color:var(--critical); }
+  .tone-success .kpi-value, .tone-success .kpi-icon{ color:var(--success); }
+  .kpi-label{ font-size:0.75rem; font-weight:600; color:var(--ink-90); }
+  .kpi-context{ font-size:0.68rem; color:var(--ink-60); }
+
+  /* ---------- 3. List panels (50/50) ---------- */
+  .panels{ display:grid; grid-template-columns:1fr 1fr; gap:0.6rem; align-items:start; }
+  .panel-stack{ display:flex; flex-direction:column; gap:0.6rem; }
+  .card{
+    background:var(--surface); border-radius:var(--radius); border:1px solid var(--border);
+    overflow:hidden;
+  }
+  .card-head{
+    display:flex; align-items:center; gap:0.4rem; padding:0.55rem 0.75rem;
+    border-bottom:1px solid var(--border);
+  }
+  .card-head .ico{ font-size:0.9rem; }
+  .card-title{ font-weight:700; font-size:0.85rem; margin:0; }
+  .card-count{ margin-left:auto; font-size:0.7rem; color:var(--ink-60); font-weight:600; }
+  .card-body{ padding:0.5rem 0.6rem; display:flex; flex-direction:column; gap:0.4rem; }
+
+  .row{
+    display:flex; align-items:center; gap:0.6rem;
+    padding:0.5rem 0.1rem; border-bottom:1px solid #f0efed;
+  }
+  .card-body .row:last-child{ border-bottom:none; }
+  .row-score{ flex:0 0 auto; display:flex; flex-direction:column; align-items:center; width:2.6rem; }
+  .ring{
+    width:2.1rem; height:2.1rem; border-radius:50%; display:flex; align-items:center; justify-content:center;
+    font-size:0.68rem; font-weight:800; color:#fff;
+  }
+  .ring.critical{ background:var(--critical); }
+  .ring.warning{ background:var(--warning); }
+  .row-main{ flex:1 1 auto; min-width:0; }
+  .row-title-line{ display:flex; align-items:center; gap:0.4rem; }
+  .row-name{ font-weight:700; font-size:0.82rem; }
+  .badge{
+    display:inline-flex; align-items:center; gap:0.2rem;
+    font-size:0.62rem; font-weight:700; text-transform:uppercase; letter-spacing:.02em;
+    padding:0.05rem 0.4rem; border-radius:999px; color:#fff;
+  }
+  .badge.critical{ background:var(--critical); }
+  .badge.warning{ background:var(--warning); }
+  .badge.neutral{ background:var(--neutral); }
+  .badge.success{ background:var(--success); }
+  .row-sub{ font-size:0.75rem; color:var(--ink-60); margin-top:0.1rem; }
+  .row-cta{ flex:0 0 auto; }
+  .btn{
+    font-size:0.72rem; font-weight:600; padding:0.32rem 0.7rem; border-radius:0.25rem;
+    border:1px solid var(--neutral); color:var(--neutral); background:#fff; cursor:pointer;
+    white-space:nowrap;
+  }
+  .btn.primary{ background:var(--critical); border-color:var(--critical); color:#fff; }
+  .btn.primary.warning{ background:var(--warning); border-color:var(--warning); }
+  .card-footer{
+    padding:0.4rem 0.75rem; text-align:right; border-top:1px solid var(--border);
+  }
+  .link{ font-size:0.75rem; font-weight:600; color:var(--neutral); text-decoration:none; }
+
+  /* mini bar viz for recommendations (confidence) */
+  .conf-bar{ width:100%; height:0.28rem; border-radius:999px; background:#e5e5e5; margin-top:0.3rem; overflow:hidden; }
+  .conf-fill{ height:100%; border-radius:999px; }
+  .conf-fill.critical{ background:var(--critical); }
+  .conf-fill.warning{ background:var(--warning); }
+  .conf-fill.neutral{ background:var(--neutral); }
+
+  /* ---------- 4. Workflow tip ---------- */
+  .tip-strip{
+    display:flex; align-items:center; gap:0.5rem;
+    background:#f4f6f9; border:1px solid var(--border); border-radius:0.4rem;
+    padding:0.45rem 0.75rem; font-size:0.78rem; color:var(--ink-60);
+  }
+  .tip-strip b{ color:var(--ink-90); }
+
+  /* ---------- 5. Bottom section (unchanged structurally, tighter rhythm only) ---------- */
+  .bottom-section{ display:grid; grid-template-columns:1fr; gap:0.6rem; }
+  .placeholder-card{
+    background:var(--surface); border:1px dashed var(--border); border-radius:var(--radius);
+    padding:0.9rem; color:var(--ink-40); font-size:0.8rem; text-align:center;
+  }
+
+  h2.section-caption{
+    font-size:0.7rem; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-40);
+    margin:1.1rem 0 0.35rem 0; font-weight:700;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <h2 class="section-caption">1 &middot; wamBriefingHeader (compact, single row)</h2>
+  <div class="region">
+    <div class="header">
+      <div class="header-icon">📈</div>
+      <div class="header-main">
+        <span class="header-greeting">Good evening, Advisor</span>
+        <span class="header-date">Mon, Jul 13</span>
+      </div>
+      <p class="header-subtitle">Review high-priority recommendations, generate briefings, follow up on at-risk clients.</p>
+      <div class="header-divider"></div>
+      <div class="header-focus">
+        <span class="header-focus-label">Today&rsquo;s focus</span>
+        <span class="header-focus-text">5 clients need urgent outreach today.</span>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="section-caption">2 &middot; wamMetricTiles / wamMetricTile (hero-number KPI strip)</h2>
+  <div class="region">
+    <div class="kpi-strip">
+      <div class="kpi-tile tone-warning">
+        <div class="kpi-value-row"><span class="kpi-value">18</span><span class="kpi-icon">⚠</span></div>
+        <span class="kpi-label">High-Priority Recommendations</span>
+        <span class="kpi-context">+4 vs. yesterday</span>
+      </div>
+      <div class="kpi-tile tone-neutral">
+        <div class="kpi-value-row"><span class="kpi-value">55</span><span class="kpi-icon">ℹ</span></div>
+        <span class="kpi-label">New AI Insights</span>
+        <span class="kpi-context">Since last sign-in</span>
+      </div>
+      <div class="kpi-tile tone-neutral">
+        <div class="kpi-value-row"><span class="kpi-value">0</span><span class="kpi-icon">ℹ</span></div>
+        <span class="kpi-label">Briefings Today</span>
+        <span class="kpi-context">None generated yet</span>
+      </div>
+      <div class="kpi-tile tone-critical">
+        <div class="kpi-value-row"><span class="kpi-value">5</span><span class="kpi-icon">✖</span></div>
+        <span class="kpi-label">At-Risk Clients</span>
+        <span class="kpi-context">Score below 50</span>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="section-caption">3 &middot; Panels &mdash; 50% dominant "Needs Your Attention" + 50% stacked (wamInsightList &times;1, wamRecommendationList)</h2>
+  <div class="region">
+    <div class="panels">
+
+      <!-- Left: dominant panel -->
+      <div class="card">
+        <div class="card-head">
+          <span class="ico">⚠</span>
+          <p class="card-title">Needs Your Attention</p>
+          <span class="card-count">5 clients</span>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="row-score"><div class="ring critical">32</div></div>
+            <div class="row-main">
+              <div class="row-title-line"><span class="row-name">Marcus Lee Family Trust</span><span class="badge critical">✖ Risk</span></div>
+              <div class="row-sub">Health score 32 — 2 missed reviews, portfolio drift 14%.</div>
+            </div>
+            <div class="row-cta"><button class="btn primary">Contact</button></div>
+          </div>
+          <div class="row">
+            <div class="row-score"><div class="ring critical">38</div></div>
+            <div class="row-main">
+              <div class="row-title-line"><span class="row-name">Priya Raman</span><span class="badge critical">✖ Risk</span></div>
+              <div class="row-sub">Health score 38 — no contact in 96 days.</div>
+            </div>
+            <div class="row-cta"><button class="btn primary">Contact</button></div>
+          </div>
+          <div class="row">
+            <div class="row-score"><div class="ring warning">47</div></div>
+            <div class="row-main">
+              <div class="row-title-line"><span class="row-name">Alan Whitfield</span><span class="badge warning">⚠ Review</span></div>
+              <div class="row-sub">Health score 47 — cash allocation above policy band.</div>
+            </div>
+            <div class="row-cta"><button class="btn primary warning">Review</button></div>
+          </div>
+          <div class="row">
+            <div class="row-score"><div class="ring warning">51</div></div>
+            <div class="row-main">
+              <div class="row-title-line"><span class="row-name">Dana Ostrowski</span><span class="badge warning">⚠ Review</span></div>
+              <div class="row-sub">Health score 51 — RMD deadline in 12 days.</div>
+            </div>
+            <div class="row-cta"><button class="btn primary warning">Review</button></div>
+          </div>
+          <div class="row">
+            <div class="row-score"><div class="ring warning">55</div></div>
+            <div class="row-main">
+              <div class="row-title-line"><span class="row-name">Julian Torres</span><span class="badge warning">⚠ Review</span></div>
+              <div class="row-sub">Health score 55 — declined last meeting invite twice.</div>
+            </div>
+            <div class="row-cta"><button class="btn primary warning">Review</button></div>
+          </div>
+        </div>
+        <div class="card-footer"><a class="link" href="#">View all at-risk clients →</a></div>
+      </div>
+
+      <!-- Right: stacked -->
+      <div class="panel-stack">
+        <div class="card">
+          <div class="card-head">
+            <span class="ico">💡</span>
+            <p class="card-title">Top Recommendations</p>
+            <span class="card-count">5 new</span>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="row-main">
+                <div class="row-title-line"><span class="row-name">Cross-Sell — Halden Wick</span><span class="badge critical">✖ High</span></div>
+                <div class="row-sub">Halden Wick: consolidate $340K held-away 401(k) into managed account.</div>
+                <div class="conf-bar"><div class="conf-fill critical" style="width:88%"></div></div>
+              </div>
+              <div class="row-cta"><button class="btn primary">Act today</button></div>
+            </div>
+            <div class="row">
+              <div class="row-main">
+                <div class="row-title-line"><span class="row-name">Retention — Sofia Marchetti</span><span class="badge warning">⚠ Medium</span></div>
+                <div class="row-sub">Sofia Marchetti: rate concern flagged in last call; launch retention play.</div>
+                <div class="conf-bar"><div class="conf-fill warning" style="width:64%"></div></div>
+              </div>
+              <div class="row-cta"><button class="btn primary warning">Review</button></div>
+            </div>
+            <div class="row">
+              <div class="row-main">
+                <div class="row-title-line"><span class="row-name">Referral — Grant Osei</span><span class="badge neutral">ℹ Info</span></div>
+                <div class="row-sub">Grant Osei: warm referral to Business Banking, est. $12K revenue.</div>
+                <div class="conf-bar"><div class="conf-fill neutral" style="width:45%"></div></div>
+              </div>
+              <div class="row-cta"><button class="btn">Open</button></div>
+            </div>
+          </div>
+          <div class="card-footer"><a class="link" href="#">View all recommendations →</a></div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <span class="ico">✨</span>
+            <p class="card-title">Latest Insights</p>
+            <span class="card-count">55 new</span>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="row-main">
+                <div class="row-title-line"><span class="row-name">Portfolio Drift — Marcus Lee Family Trust</span><span class="badge warning">⚠ New</span></div>
+                <div class="row-sub">Equity allocation now 68% vs. 55% target — 13pt overweight.</div>
+              </div>
+              <div class="row-cta"><button class="btn">Review</button></div>
+            </div>
+            <div class="row">
+              <div class="row-main">
+                <div class="row-title-line"><span class="row-name">Life Event — Priya Raman</span><span class="badge warning">⚠ New</span></div>
+                <div class="row-sub">Recent large deposit detected — possible liquidity event.</div>
+              </div>
+              <div class="row-cta"><button class="btn">Review</button></div>
+            </div>
+            <div class="row">
+              <div class="row-main">
+                <div class="row-title-line"><span class="row-name">Sentiment — Alan Whitfield</span><span class="badge neutral">ℹ Insight</span></div>
+                <div class="row-sub">Call sentiment trending negative over last 2 touchpoints.</div>
+              </div>
+              <div class="row-cta"><button class="btn">Review</button></div>
+            </div>
+          </div>
+          <div class="card-footer"><a class="link" href="#">View all insights →</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="section-caption">4 &middot; Recommended workflow tip (tight spacing, no dead gap)</h2>
+  <div class="region">
+    <div class="tip-strip">
+      <span>💡</span>
+      <span><b>Recommended workflow:</b> Select a client below, then work through 1. Growth Intelligence → 2. Service and Retention → 3. Operations Controls.</span>
+    </div>
+  </div>
+
+  <h2 class="section-caption">5 &middot; Client selector / Action Center / Growth-Service Command Center (structurally unchanged — tighter rhythm only, OUT OF SCOPE for redesign)</h2>
+  <div class="region">
+    <div class="bottom-section">
+      <div class="placeholder-card">Client / Household selector (unchanged)</div>
+      <div class="placeholder-card">Advisor Action Center — empty until a client is selected (unchanged)</div>
+      <div class="placeholder-card">Growth &amp; Service Command Center — empty until a client is selected (unchanged)</div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

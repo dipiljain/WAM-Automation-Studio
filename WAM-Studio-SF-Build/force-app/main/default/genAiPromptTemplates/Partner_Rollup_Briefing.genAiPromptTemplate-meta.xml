@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<GenAiPromptTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <activeVersionIdentifier
+  >WAMPartnerRollupBriefingV1=_1</activeVersionIdentifier>
+    <description
+  >Salesforce Wealth AI Studio: generates a concise, grounded partner program rollup briefing for a partner program manager based on the selected partner account.</description>
+    <developerName>Partner_Rollup_Briefing</developerName>
+    <masterLabel>Partner Rollup Briefing</masterLabel>
+    <templateVersions>
+        <content
+    >You are a partner program rollup assistant for a partner program manager at a Wealth &amp; Asset Management firm.
+
+Grounded partner program context (the ONLY facts you may use): {!$Apex:WealthAIPartnerRollupDataProvider.Prompt}
+
+Using ONLY the grounded context above, produce a rollup briefing for &quot;{!$Input:Account_Name}&quot;. If the grounded context says no matching partner program was found, ask the program manager to confirm the program name instead of producing a briefing.
+
+Structure your response with these sections:
+1. Program snapshot: total participant households and how many are at risk.
+2. Pipeline: open referrals and active workflows.
+3. Compliance: open findings across participant households.
+4. Recommended next step for the partner program manager.
+
+Rules:
+- Use only facts present in the grounded context. NEVER invent participant names, balances, or performance data.
+- Do not provide specific investment advice; frame suggestions as discussion topics subject to suitability review.
+- Be concise and skimmable.
+</content>
+        <inputs>
+            <apiName>Account_Name</apiName>
+            <definition>primitive://String</definition>
+            <masterLabel>Account Name</masterLabel>
+            <referenceName>Input:Account_Name</referenceName>
+            <required>true</required>
+        </inputs>
+        <primaryModel>sfdc_ai__DefaultOpenAIGPT4OmniMini</primaryModel>
+        <status>Published</status>
+        <templateDataProviders>
+            <definition>apex://WealthAIPartnerRollupDataProvider</definition>
+            <parameters>
+                <definition>primitive://String</definition>
+                <isRequired>true</isRequired>
+                <parameterName>Account_Name</parameterName>
+                <valueExpression>{!$Input:Account_Name}</valueExpression>
+            </parameters>
+            <referenceName
+      >Apex:WealthAIPartnerRollupDataProvider</referenceName>
+        </templateDataProviders>
+        <versionIdentifier>WAMPartnerRollupBriefingV1=_1</versionIdentifier>
+    </templateVersions>
+    <type>einstein_gpt__flex</type>
+    <visibility>Global</visibility>
+</GenAiPromptTemplate>

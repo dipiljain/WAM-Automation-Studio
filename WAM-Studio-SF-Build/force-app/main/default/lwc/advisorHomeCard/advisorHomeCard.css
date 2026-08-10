@@ -1,0 +1,11 @@
+:host {
+  display: block;
+}
+
+.stacked-panel {
+  margin-bottom: 0.75rem;
+}
+
+.stacked-panel_last {
+  margin-bottom: 0;
+}

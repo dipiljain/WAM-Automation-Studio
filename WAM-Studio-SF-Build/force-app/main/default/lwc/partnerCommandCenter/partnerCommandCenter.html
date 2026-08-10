@@ -1,0 +1,144 @@
+<template>
+  <lightning-card
+    title="Partner Command Center"
+    icon-name="standard:partner_fund_allocation"
+  >
+    <div class="slds-p-around_small">
+      <lightning-combobox
+        if:false={recordId}
+        name="partnerAccountSelector"
+        label="Partner Program"
+        value={selectedAccountId}
+        options={accountOptions}
+        onchange={handleAccountChange}
+      ></lightning-combobox>
+
+      <template if:true={loading}>
+        <c-wam-state-panel state="loading"></c-wam-state-panel>
+      </template>
+
+      <template if:true={errorMessage}>
+        <c-wam-state-panel
+          state="error"
+          title="Command center error"
+          message={errorMessage}
+        ></c-wam-state-panel>
+      </template>
+
+      <template if:true={snapshot}>
+        <div
+          class="slds-grid slds-wrap slds-gutters_x-small slds-m-bottom_x-small"
+        >
+          <template for:each={metricTiles} for:item="tile">
+            <div
+              key={tile.key}
+              class="slds-col slds-size_1-of-2 slds-large-size_1-of-3 slds-p-vertical_xx-small"
+            >
+              <c-wam-metric-tile
+                label={tile.label}
+                value={tile.display}
+                tone={tile.tone}
+                record-url={tile.recordUrl}
+              ></c-wam-metric-tile>
+            </div>
+          </template>
+        </div>
+
+        <div class="action-panel">
+          <div class="section-title">Program Growth</div>
+          <div class="action-grid action-grid_three">
+            <div class="action-cell">
+              <lightning-button
+                stretch
+                label="Run Partner Onboarding Batch"
+                onclick={handleOnboardingBatch}
+                disabled={actionDisabled}
+              ></lightning-button>
+            </div>
+            <div class="action-cell">
+              <lightning-button
+                stretch
+                label="Run Cross-Program Referral"
+                onclick={handleCrossProgramReferral}
+                disabled={actionDisabled}
+              ></lightning-button>
+            </div>
+            <div class="action-cell">
+              <lightning-button
+                stretch
+                label="Run Participant Engagement Campaign"
+                onclick={handleEngagementCampaign}
+                disabled={actionDisabled}
+              ></lightning-button>
+            </div>
+          </div>
+
+          <div class="section-title">Autonomous</div>
+          <div class="action-grid action-grid_three">
+            <div class="action-cell">
+              <lightning-button
+                stretch
+                label="Run Autonomous Partner Growth Agent"
+                onclick={handleAutonomousGrowth}
+                disabled={actionDisabled}
+              ></lightning-button>
+            </div>
+          </div>
+
+          <div class="section-title">White-Label Advisor Enablement</div>
+          <div class="slds-grid slds-wrap slds-gutters_x-small">
+            <div class="slds-col slds-size_1-of-1 slds-medium-size_2-of-3">
+              <lightning-combobox
+                name="participantSelector"
+                label="At-Risk Participant"
+                value={selectedParticipantId}
+                options={participantOptions}
+                onchange={handleParticipantChange}
+                placeholder="Select a participant household"
+              ></lightning-combobox>
+            </div>
+            <div
+              class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3 white-label-button"
+            >
+              <lightning-button
+                stretch
+                label="Run White-Label Advisor Action"
+                onclick={handleWhiteLabelAction}
+                disabled={whiteLabelDisabled}
+              ></lightning-button>
+            </div>
+          </div>
+        </div>
+
+        <div class="slds-grid slds-wrap slds-gutters_small">
+          <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-2">
+            <c-wam-insight-list
+              title="At-Risk Participants"
+              items={atRiskItems}
+              loading={loading}
+            ></c-wam-insight-list>
+          </div>
+          <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-2">
+            <c-wam-insight-list
+              title="Participant Compliance Rollup"
+              items={complianceItems}
+              loading={loading}
+            ></c-wam-insight-list>
+          </div>
+        </div>
+      </template>
+    </div>
+
+    <template if:true={lastAction}>
+      <div class="slds-p-horizontal_small slds-p-bottom_small">
+        <c-wam-action-result-panel
+          title={lastAction.title}
+          detail={lastAction.detail}
+          tone={lastAction.tone}
+          next-step={lastAction.nextStep}
+          record-url={lastAction.recordUrl}
+        ></c-wam-action-result-panel>
+      </div>
+    </template>
+  </lightning-card>
+</template>

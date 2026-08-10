@@ -1,0 +1,41 @@
+<template>
+  <template if:true={isLoading}>
+    <div
+      class="state state_loading slds-p-around_medium"
+      role="status"
+      aria-live="polite"
+    >
+      <div class="skeleton skeleton_lg"></div>
+      <div class="skeleton"></div>
+      <div class="skeleton"></div>
+    </div>
+  </template>
+
+  <template if:true={isError}>
+    <div class="state state_error slds-p-around_medium">
+      <lightning-icon
+        icon-name="utility:error"
+        size="x-small"
+        alternative-text="Error"
+      ></lightning-icon>
+      <div>
+        <p class="title">{title}</p>
+        <p class="message">{message}</p>
+      </div>
+    </div>
+  </template>
+
+  <template if:true={isEmpty}>
+    <div class="state state_empty slds-p-around_medium">
+      <lightning-icon
+        icon-name="utility:info"
+        size="x-small"
+        alternative-text="Info"
+      ></lightning-icon>
+      <div>
+        <p class="title">{title}</p>
+        <p class="message">{message}</p>
+      </div>
+    </div>
+  </template>
+</template>

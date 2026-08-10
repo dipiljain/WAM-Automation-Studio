@@ -1,0 +1,24 @@
+<template>
+  <div class={panelClass}>
+    <div class="result-header">
+      <lightning-icon
+        icon-name={toneIconName}
+        variant={toneVariant}
+        size="x-small"
+        class="tone-icon"
+      ></lightning-icon>
+      <p class="summary-title">{title}</p>
+    </div>
+    <p class="summary-detail">{detail}</p>
+    <p if:true={metaLabel} class="summary-meta">{metaLabel}: {metaValue}</p>
+    <div if:true={nextStep} class="next-step">
+      <span class="next-step-label">Next step</span>
+      <span class="next-step-text">{nextStep}</span>
+    </div>
+    <div if:true={recordUrl} class="result-actions">
+      <a href={recordUrl} target="_blank" class="view-record-link"
+        >{recordLabel} →</a
+      >
+    </div>
+  </div>
+</template>

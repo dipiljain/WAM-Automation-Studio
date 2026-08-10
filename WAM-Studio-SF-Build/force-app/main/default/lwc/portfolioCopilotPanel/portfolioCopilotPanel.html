@@ -1,0 +1,119 @@
+<template>
+  <lightning-card title="Portfolio Copilot" icon-name="standard:wealth">
+    <div class="slds-p-around_small">
+      <lightning-combobox
+        if:false={recordId}
+        name="portfolioAccountSelector"
+        label="Client / Household"
+        value={selectedAccountId}
+        options={accountOptions}
+        onchange={handleAccountChange}
+      ></lightning-combobox>
+
+      <template if:true={loading}>
+        <c-wam-state-panel state="loading"></c-wam-state-panel>
+      </template>
+
+      <template if:true={errorMessage}>
+        <c-wam-state-panel
+          state="error"
+          title="Portfolio Copilot error"
+          message={errorMessage}
+        ></c-wam-state-panel>
+      </template>
+
+      <template if:true={snapshot}>
+        <div
+          class="slds-grid slds-wrap slds-gutters_x-small slds-m-bottom_x-small"
+        >
+          <template for:each={metricTiles} for:item="tile">
+            <div
+              key={tile.key}
+              class="slds-col slds-size_1-of-2 slds-large-size_1-of-4 slds-p-vertical_xx-small"
+            >
+              <c-wam-metric-tile
+                label={tile.label}
+                value={tile.display}
+                tone={tile.tone}
+                record-url={tile.recordUrl}
+              ></c-wam-metric-tile>
+            </div>
+          </template>
+        </div>
+
+        <div class="action-panel slds-m-bottom_small">
+          <div class="section-title">Portfolio analysis actions</div>
+          <div class="action-grid">
+            <div class="action-cell">
+              <lightning-button
+                stretch
+                label="Run Portfolio Health Analyzer"
+                variant="brand"
+                onclick={handleHealthAnalyzer}
+                disabled={actionDisabled}
+              ></lightning-button>
+            </div>
+            <div class="action-cell">
+              <lightning-button
+                stretch
+                label="Run Portfolio Review Copilot"
+                variant="brand-outline"
+                onclick={handleReviewCopilot}
+                disabled={actionDisabled}
+              ></lightning-button>
+            </div>
+            <div class="action-cell">
+              <lightning-button
+                stretch
+                label="Generate Commentary"
+                variant="neutral"
+                onclick={handleCommentary}
+                disabled={actionDisabled}
+              ></lightning-button>
+            </div>
+            <div class="action-cell">
+              <lightning-button
+                stretch
+                label="Detect Risk Exposure"
+                variant="neutral"
+                onclick={handleRiskDetection}
+                disabled={actionDisabled}
+              ></lightning-button>
+            </div>
+          </div>
+        </div>
+
+        <div class="slds-grid slds-wrap slds-gutters_small">
+          <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-2">
+            <c-wam-recommendation-list
+              title="Latest Portfolio Alerts"
+              items={alertItems}
+              loading={loading}
+            ></c-wam-recommendation-list>
+          </div>
+          <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-2">
+            <c-wam-insight-list
+              title="Latest Risk Signals"
+              items={signalItems}
+              loading={loading}
+            ></c-wam-insight-list>
+          </div>
+        </div>
+      </template>
+    </div>
+
+    <template if:true={lastAction}>
+      <div class="slds-p-horizontal_small slds-p-bottom_small">
+        <c-wam-action-result-panel
+          title={lastAction.title}
+          detail={lastAction.detail}
+          tone={lastAction.tone}
+          next-step={lastAction.nextStep}
+          record-url={lastAction.recordUrl}
+          meta-label="Severity"
+          meta-value={lastAction.severity}
+        ></c-wam-action-result-panel>
+      </div>
+    </template>
+  </lightning-card>
+</template>
