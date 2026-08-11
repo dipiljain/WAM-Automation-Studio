@@ -265,7 +265,11 @@ public with sharing class WealthAIAutonomyUseCaseService {
     Compliance_Finding__c finding = new Compliance_Finding__c(
       Account__c = acct.Id,
       Finding_Type__c = 'Surveillance',
-      Status__c = 'Escalated'
+      Status__c = 'Escalated',
+      Reason_Detail__c = WamExplain.complianceFindingReason(
+        'Surveillance',
+        'Escalated'
+      )
     );
     insert finding;
     finalizeRun(runRecord.Id, true);
@@ -356,7 +360,8 @@ public with sharing class WealthAIAutonomyUseCaseService {
     Portfolio_Alert__c alert = new Portfolio_Alert__c(
       Account__c = acct.Id,
       Alert_Type__c = 'Drift',
-      Severity__c = 'High'
+      Severity__c = 'High',
+      Reason_Detail__c = WamExplain.portfolioAlertReason('Drift', 'High', null)
     );
     insert alert;
     Risk_Signal__c signal = new Risk_Signal__c(

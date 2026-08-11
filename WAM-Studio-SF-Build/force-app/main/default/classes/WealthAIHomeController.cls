@@ -232,7 +232,7 @@ public with sharing class WealthAIHomeController {
   public static List<FeedItem> getAdvisorPriorityQueue() {
     List<FeedItem> results = new List<FeedItem>();
     for (Client_Health_Score__c row : [
-      SELECT Account__c, Account__r.Name, Score__c
+      SELECT Account__c, Account__r.Name, Score__c, Score_Drivers__c
       FROM Client_Health_Score__c
       WHERE Score__c < 60
       ORDER BY Score__c ASC
@@ -251,9 +251,9 @@ public with sharing class WealthAIHomeController {
         tone
       );
       item.accountId = row.Account__c;
-      item.explanation = 'Health score of ' +
-        row.Score__c.setScale(0) +
-        ' is below the 60-point healthy threshold, driven by declining engagement or portfolio signals for this client.';
+      item.explanation = String.isNotBlank(row.Score_Drivers__c)
+        ? row.Score_Drivers__c
+        : WamExplain.healthDrivers(row.Score__c);
       results.add(item);
     }
     return results;
@@ -263,7 +263,13 @@ public with sharing class WealthAIHomeController {
   public static List<FeedItem> getComplianceQueue() {
     List<Compliance_Finding__c> rows = new List<Compliance_Finding__c>(
       [
-        SELECT Id, Account__c, Account__r.Name, Finding_Type__c, Status__c
+        SELECT
+          Id,
+          Account__c,
+          Account__r.Name,
+          Finding_Type__c,
+          Status__c,
+          Reason_Detail__c
         FROM Compliance_Finding__c
         WHERE Status__c = 'Escalated'
         ORDER BY CreatedDate DESC
@@ -273,7 +279,13 @@ public with sharing class WealthAIHomeController {
     if (rows.size() < 6) {
       rows.addAll(
         [
-          SELECT Id, Account__c, Account__r.Name, Finding_Type__c, Status__c
+          SELECT
+            Id,
+            Account__c,
+            Account__r.Name,
+            Finding_Type__c,
+            Status__c,
+            Reason_Detail__c
           FROM Compliance_Finding__c
           WHERE Status__c = 'Open'
           ORDER BY CreatedDate DESC
@@ -296,9 +308,12 @@ public with sharing class WealthAIHomeController {
         tone
       );
       item.accountId = row.Account__c;
-      item.explanation = row.Status__c == 'Escalated'
-        ? 'This finding remains escalated until compliance formally signs off on remediation.'
-        : 'Findings of this type are auto-flagged when opened and unresolved past the policy SLA.';
+      item.explanation = String.isNotBlank(row.Reason_Detail__c)
+        ? row.Reason_Detail__c
+        : WamExplain.complianceFindingReason(
+            row.Finding_Type__c,
+            row.Status__c
+          );
       results.add(item);
     }
     return results;

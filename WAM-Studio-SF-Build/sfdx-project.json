@@ -1,15 +1,19 @@
 {
   "packageDirectories": [
     {
+      "versionName": "ver 0.1",
+      "versionNumber": "0.1.0.NEXT",
       "path": "force-app",
       "default": true,
       "package": "Salesforce Wealth AI Studio",
-      "versionName": "ver 0.1",
-      "versionNumber": "0.1.0.NEXT"
+      "versionDescription": "FSC-native / Agentforce-ready Wealth & Asset Management AI accelerator: 18 AI objects, use-case services, invocable actions, agent + prompt bundles, persona home UI, and explainability drivers."
     }
   ],
   "name": "WealthAIStudio",
   "namespace": "",
   "sfdcLoginUrl": "https://login.salesforce.com",
-  "sourceApiVersion": "67.0"
+  "sourceApiVersion": "67.0",
+  "packageAliases": {
+    "Salesforce Wealth AI Studio": "0Hog500000019FlCAI"
+  }
 }

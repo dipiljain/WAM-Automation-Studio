@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Reason_Detail__c</fullName>
+    <label>Reason Detail</label>
+    <description>Human-readable explanation of why this compliance finding was raised.</description>
+    <inlineHelpText>Why this finding was flagged — the specific condition or policy trigger.</inlineHelpText>
+    <length>32000</length>
+    <required>false</required>
+    <type>LongTextArea</type>
+    <visibleLines>4</visibleLines>
+</CustomField>

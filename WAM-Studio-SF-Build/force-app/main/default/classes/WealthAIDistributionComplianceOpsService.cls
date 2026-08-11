@@ -310,7 +310,11 @@ public with sharing class WealthAIDistributionComplianceOpsService {
     Compliance_Finding__c finding = new Compliance_Finding__c(
       Account__c = acct.Id,
       Finding_Type__c = findingType,
-      Status__c = statusValue
+      Status__c = statusValue,
+      Reason_Detail__c = WamExplain.complianceFindingReason(
+        findingType,
+        statusValue
+      )
     );
     insert finding;
     WealthAIStudioService.completeRun(

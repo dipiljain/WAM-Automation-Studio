@@ -65,7 +65,10 @@ public with sharing class WealthAIClient360DataProvider {
       snapshot.openFindings +
       '. Critical/High Portfolio Alerts: ' +
       snapshot.criticalAlerts +
-      '.';
+      '.' +
+      (String.isBlank(snapshot.healthDrivers)
+        ? ''
+        : ' Health Score Drivers: ' + snapshot.healthDrivers);
   }
 
   private static String formatScore(Decimal score) {

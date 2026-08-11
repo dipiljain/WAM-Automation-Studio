@@ -1,7 +1,12 @@
 {
-  "orgName": "dipiljain company",
+  "orgName": "Wealth AI Studio Build",
   "edition": "Developer",
-  "features": ["EnableSetPasswordInApi", "Einstein1AIPlatform"],
+  "features": [
+    "EnableSetPasswordInApi",
+    "PersonAccounts",
+    "FinancialServicesUser:10",
+    "Einstein1AIPlatform"
+  ],
   "settings": {
     "lightningExperienceSettings": {
       "enableS1DesktopEnabled": true

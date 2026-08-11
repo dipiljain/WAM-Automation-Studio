@@ -84,9 +84,11 @@ public with sharing class WealthAIDashboardResetService {
         'Low',
         25000
       );
+      Decimal seedScore = 70 + Math.mod(i * 7, 20);
       insert new Client_Health_Score__c(
         Account__c = acctId,
-        Score__c = 70 + Math.mod(i * 7, 20)
+        Score__c = seedScore,
+        Score_Drivers__c = WamExplain.healthDrivers(seedScore)
       );
       reseeded++;
     }
@@ -123,11 +125,16 @@ public with sharing class WealthAIDashboardResetService {
     List<Id> baselineAccounts = resolveBaselineAccounts(accountIds, null);
     List<Compliance_Finding__c> reseeded = new List<Compliance_Finding__c>();
     for (Integer i = 0; i < baselineAccounts.size(); i++) {
+      String seedFindingType = findingTypes[Math.mod(i, findingTypes.size())];
       reseeded.add(
         new Compliance_Finding__c(
           Account__c = baselineAccounts[i],
-          Finding_Type__c = findingTypes[Math.mod(i, findingTypes.size())],
-          Status__c = 'Cleared'
+          Finding_Type__c = seedFindingType,
+          Status__c = 'Cleared',
+          Reason_Detail__c = WamExplain.complianceFindingReason(
+            seedFindingType,
+            'Cleared'
+          )
         )
       );
     }
@@ -288,10 +295,12 @@ public with sharing class WealthAIDashboardResetService {
 
     List<Client_Health_Score__c> reseeded = new List<Client_Health_Score__c>();
     for (Integer i = 0; i < baselineAccounts.size(); i++) {
+      Decimal seedScore = 70 + Math.mod(i * 7, 20);
       reseeded.add(
         new Client_Health_Score__c(
           Account__c = baselineAccounts[i],
-          Score__c = 70 + Math.mod(i * 7, 20)
+          Score__c = seedScore,
+          Score_Drivers__c = WamExplain.healthDrivers(seedScore)
         )
       );
     }

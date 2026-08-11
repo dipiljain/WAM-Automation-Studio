@@ -27,6 +27,8 @@ public with sharing class WealthAIAdvisorUseCaseService {
     public Integer openFindings;
     @AuraEnabled
     public Integer criticalAlerts;
+    @AuraEnabled
+    public String healthDrivers;
   }
 
   public class ActionResult {
@@ -101,7 +103,7 @@ public with sharing class WealthAIAdvisorUseCaseService {
       LIMIT 1
     ];
     List<Client_Health_Score__c> healthRows = [
-      SELECT Score__c
+      SELECT Score__c, Score_Drivers__c
       FROM Client_Health_Score__c
       WHERE Account__c = :acct.Id
       ORDER BY CreatedDate DESC
@@ -111,6 +113,9 @@ public with sharing class WealthAIAdvisorUseCaseService {
       ? null
       : engagementRows[0].Score__c;
     snapshot.healthScore = healthRows.isEmpty() ? null : healthRows[0].Score__c;
+    snapshot.healthDrivers = healthRows.isEmpty()
+      ? null
+      : healthRows[0].Score_Drivers__c;
     return snapshot;
   }
 
@@ -163,7 +168,14 @@ public with sharing class WealthAIAdvisorUseCaseService {
       100
     );
 
-    upsertScore(acct.Id, engagementScore, healthScore);
+    String drivers = WamExplain.healthDrivers(
+      healthScore,
+      engagementScore,
+      openFindings,
+      criticalAlerts,
+      newRecommendations
+    );
+    upsertScore(acct.Id, engagementScore, healthScore, drivers);
 
     ScoreResult result = new ScoreResult();
     result.accountId = acct.Id;
@@ -386,7 +398,8 @@ public with sharing class WealthAIAdvisorUseCaseService {
   private static void upsertScore(
     Id accountId,
     Decimal engagement,
-    Decimal health
+    Decimal health,
+    String healthDrivers
   ) {
     List<Engagement_Score__c> engagementRows = [
       SELECT Id
@@ -417,12 +430,14 @@ public with sharing class WealthAIAdvisorUseCaseService {
     if (healthRows.isEmpty()) {
       insert new Client_Health_Score__c(
         Account__c = accountId,
-        Score__c = health
+        Score__c = health,
+        Score_Drivers__c = healthDrivers
       );
     } else {
       update new Client_Health_Score__c(
         Id = healthRows[0].Id,
-        Score__c = health
+        Score__c = health,
+        Score_Drivers__c = healthDrivers
       );
     }
   }

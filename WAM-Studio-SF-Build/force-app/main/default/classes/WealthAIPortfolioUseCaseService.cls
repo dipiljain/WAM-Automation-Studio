@@ -81,16 +81,19 @@ public with sharing class WealthAIPortfolioUseCaseService {
     Account acct = validateAccount(accountId);
     List<PortfolioItem> items = new List<PortfolioItem>();
     for (Portfolio_Alert__c alert : [
-      SELECT Id, Alert_Type__c, Severity__c
+      SELECT Id, Alert_Type__c, Severity__c, Reason_Detail__c
       FROM Portfolio_Alert__c
       WHERE Account__c = :acct.Id
       ORDER BY CreatedDate DESC
       LIMIT 5
     ]) {
+      String subtitle = String.isNotBlank(alert.Reason_Detail__c)
+        ? abbreviate(alert.Reason_Detail__c, 110)
+        : 'Severity: ' + alert.Severity__c;
       PortfolioItem item = new PortfolioItem(
         String.valueOf(alert.Id),
         alert.Alert_Type__c + ' alert',
-        'Severity: ' + alert.Severity__c,
+        subtitle,
         toTone(alert.Severity__c)
       );
       item.accountId = acct.Id;
@@ -144,7 +147,12 @@ public with sharing class WealthAIPortfolioUseCaseService {
     Portfolio_Alert__c alert = new Portfolio_Alert__c(
       Account__c = acct.Id,
       Alert_Type__c = 'Drift',
-      Severity__c = severity
+      Severity__c = severity,
+      Reason_Detail__c = WamExplain.portfolioAlertReason(
+        'Drift',
+        severity,
+        snapshot.healthScore
+      )
     );
     insert alert;
     WealthAIStudioService.completeRun(runRecord.Id, 'Success');
@@ -270,7 +278,12 @@ public with sharing class WealthAIPortfolioUseCaseService {
     insert new Portfolio_Alert__c(
       Account__c = acct.Id,
       Alert_Type__c = 'Risk',
-      Severity__c = severity
+      Severity__c = severity,
+      Reason_Detail__c = WamExplain.portfolioAlertReason(
+        'Risk',
+        severity,
+        null
+      )
     );
     WealthAIStudioService.completeRun(runRecord.Id, 'Success');
 

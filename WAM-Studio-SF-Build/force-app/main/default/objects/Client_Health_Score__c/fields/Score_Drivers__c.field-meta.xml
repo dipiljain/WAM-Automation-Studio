@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Score_Drivers__c</fullName>
+    <label>Score Drivers</label>
+    <description>Human-readable explanation of the factors driving this client health score (engagement, compliance findings, portfolio alerts, unactioned recommendations).</description>
+    <inlineHelpText>Why the health score is what it is — the specific signals that raised or lowered it.</inlineHelpText>
+    <length>32000</length>
+    <required>false</required>
+    <type>LongTextArea</type>
+    <visibleLines>4</visibleLines>
+</CustomField>

@@ -240,6 +240,8 @@
     >true</readable><editable>true</editable></fieldPermissions>
     <fieldPermissions><field>Portfolio_Alert__c.Severity__c</field><readable
     >true</readable><editable>true</editable></fieldPermissions>
+    <fieldPermissions><field>Portfolio_Alert__c.Reason_Detail__c</field><readable
+    >true</readable><editable>true</editable></fieldPermissions>
     <fieldPermissions><field>Compliance_Finding__c.Account__c</field><readable
     >true</readable><editable>true</editable></fieldPermissions>
     <fieldPermissions><field>Compliance_Finding__c.Case__c</field><readable
@@ -249,9 +251,13 @@
     >true</readable><editable>true</editable></fieldPermissions>
     <fieldPermissions><field>Compliance_Finding__c.Status__c</field><readable
     >true</readable><editable>true</editable></fieldPermissions>
+    <fieldPermissions><field>Compliance_Finding__c.Reason_Detail__c</field><readable
+    >true</readable><editable>true</editable></fieldPermissions>
     <fieldPermissions><field>Client_Health_Score__c.Account__c</field><readable
     >true</readable><editable>true</editable></fieldPermissions>
     <fieldPermissions><field>Client_Health_Score__c.Score__c</field><readable
+    >true</readable><editable>true</editable></fieldPermissions>
+    <fieldPermissions><field>Client_Health_Score__c.Score_Drivers__c</field><readable
     >true</readable><editable>true</editable></fieldPermissions>
     <fieldPermissions><field
     >Workflow_Execution__c.Automation_Template__c</field><readable

@@ -409,7 +409,11 @@ public with sharing class WealthAIGrowthScaleService {
     Compliance_Finding__c finding = new Compliance_Finding__c(
       Account__c = acct.Id,
       Finding_Type__c = 'Surveillance',
-      Status__c = 'Under Review'
+      Status__c = 'Under Review',
+      Reason_Detail__c = WamExplain.complianceFindingReason(
+        'Surveillance',
+        'Under Review'
+      )
     );
     insert finding;
     WealthAIStudioService.completeRun(runRecord.Id, 'Success');

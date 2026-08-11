@@ -169,15 +169,17 @@ public with sharing class WealthAIPartnerUseCaseService {
 
     Set<Id> participantIds = participantToPartner.keySet();
     Map<Id, Decimal> latestScoreByAccount = new Map<Id, Decimal>();
+    Map<Id, String> latestDriversByAccount = new Map<Id, String>();
     if (!participantIds.isEmpty()) {
       for (Client_Health_Score__c row : [
-        SELECT Account__c, Score__c
+        SELECT Account__c, Score__c, Score_Drivers__c
         FROM Client_Health_Score__c
         WHERE Account__c IN :participantIds
         ORDER BY Account__c, CreatedDate DESC
       ]) {
         if (!latestScoreByAccount.containsKey(row.Account__c)) {
           latestScoreByAccount.put(row.Account__c, row.Score__c);
+          latestDriversByAccount.put(row.Account__c, row.Score_Drivers__c);
         }
       }
     }
@@ -208,9 +210,11 @@ public with sharing class WealthAIPartnerUseCaseService {
         tone
       );
       item.accountId = pid;
-      item.explanation = 'Health score of ' +
-        score.setScale(0) +
-        ' ranks in the bottom tier of this partner program, below the 60-point healthy threshold.';
+      String storedDrivers = latestDriversByAccount.get(pid);
+      item.explanation = String.isNotBlank(storedDrivers)
+        ? storedDrivers
+        : WamExplain.healthDrivers(score) +
+          ' Ranks in the bottom tier of this partner program.';
       results.add(item);
     }
     return results;

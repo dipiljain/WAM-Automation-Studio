@@ -360,7 +360,8 @@ public with sharing class WealthAIInstitutionalUseCaseService {
     Compliance_Finding__c finding = new Compliance_Finding__c(
       Account__c = acct.Id,
       Finding_Type__c = 'KYC',
-      Status__c = 'Open'
+      Status__c = 'Open',
+      Reason_Detail__c = WamExplain.complianceFindingReason('KYC', 'Open')
     );
     insert finding;
     WealthAIStudioService.completeRun(runRecord.Id, 'Success');
